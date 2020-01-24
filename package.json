@@ -1,0 +1,36 @@
+{
+	"name": "twitterdumpsterfire",
+	"version": "1.0.0",
+	"description": "",
+	"main": "server.js",
+	"eslintConfig": {
+		"extends": [
+			"plugin:prettier/recommended"
+		]
+	},
+	"scripts": {
+		"start": "npm run nodejs",
+		"prod": "npm run start-prod",
+		"dev": "npm run start-dev",
+		"start-dev": "concurrently --kill-others-on-fail  \"npm run nodejs\"",
+		"start-prod": "concurrently --kill-others-on-fail  \"npm run nodejs\"",
+		"nodejs": "nodemon ./server.js"
+	},
+	"author": "JPB",
+	"license": "ISC",
+	"dependencies": {
+		"date-fns": "^2.9.0",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"mongoose": "^5.8.4",
+		"mongoose-paginate": "^5.0.3",
+		"node-libcurl": "^2.0.3",
+		"sentiment": "^5.0.2",
+		"simple-statistics": "^7.0.7"
+	},
+	"devDependencies": {
+		"concurrently": "^5.0.2",
+		"nodemon": "^2.0.2",
+		"typescript": "^3.7.4"
+	}
+}

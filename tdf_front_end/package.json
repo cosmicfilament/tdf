@@ -1,0 +1,50 @@
+{
+	"name": "twitterdumpsterfire",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"babel-plugin-macros": "^2.8.0",
+		"chart.js": "^2.9.3",
+		"date-fns": "^2.9.0",
+		"react": "^16.12.0",
+		"react-app-rewire-styled-components": "^3.0.2",
+		"react-dom": "^16.12.0",
+		"react-google-charts": "^3.0.15",
+		"react-icons": "^3.8.0",
+		"react-router-dom": "^5.1.2",
+		"react-scripts": "3.3.0",
+		"react-transition-group": "^4.3.0",
+		"simple-statistics": "^7.0.7",
+		"styled-components": "^5.0.0"
+	},
+	"scripts": {
+		"start": "react-app-rewired start",
+		"build": "react-app-rewired build",
+		"eject": "react-scripts eject"
+	},
+	"babel": {
+		"plugins": [
+			"babel-plugin-styled-components"
+		]
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"babel-plugin-styled-components": "^1.10.6",
+		"react-app-rewired": "^2.1.5",
+		"typescript": "^3.7.5"
+	}
+}
