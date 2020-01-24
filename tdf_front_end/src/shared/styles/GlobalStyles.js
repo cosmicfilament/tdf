@@ -15,9 +15,6 @@ body{
   background:${setColor.mainWhite};
   font-family: ${setFont.main};
 }
-h1, h2, h3, h4{
-        text-align: center;
-}
 h1{
   font-size:3em;line-height:1.2;margin-bottom:0.5em
 }
