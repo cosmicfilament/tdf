@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 import { setColor, setFont } from '../../styles';
 const GlobalStyles = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css?family=Bree+Serif&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Archivo&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Arvo|Lato:400,700&display=swap');
    
 *{

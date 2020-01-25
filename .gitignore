@@ -31,3 +31,8 @@
 
 # misc
 .DS_Store
+
+# vim stuff
+*~
+*.swp
+*.swo

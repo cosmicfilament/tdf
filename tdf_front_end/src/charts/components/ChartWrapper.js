@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 import { min, max, mean, median, standardDeviation } from 'simple-statistics';
@@ -8,11 +8,15 @@ import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
+import {
+	VALIDATOR_REQUIRE,
+	VALIDATOR_IGNORE
+} from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/formHook';
 import { useHttpClient } from '../../shared/hooks/httpHook';
 import reactConfig from '../../shared/util/reactConfig';
 import LineChart from './LineChart';
+import FileImporter from './FileImporter';
 
 const ChartWrapper = props => {
 	const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -23,11 +27,22 @@ const ChartWrapper = props => {
 		fromDate: props.from,
 		toDate: props.to
 	});
+	const [
+		fileImport,
+		setFileImport
+	] = useState([]);
 
 	const [
 		sentimentStats,
 		setSentimentStats
-	] = useState({ _minS: 0, _maxS: 0, _meanS: 0, _medianS: 0, _stdDevS: 0 });
+	] = useState({
+		_countS: 0,
+		_minS: 0,
+		_maxS: 0,
+		_meanS: 0,
+		_medianS: 0,
+		_stdDevS: 0
+	});
 
 	const [
 		tweetcountStats,
@@ -57,43 +72,15 @@ const ChartWrapper = props => {
 		false
 	);
 
-	const processResponse = async (responseData, params) => {
+	const processResponse = useCallback((responseData, params) => {
 		let dataLabels = [],
 			data1 = [],
 			data2 = [];
 
-		const _minS = min(
-			responseData.sentiments.map(sentiment => sentiment.score)
-		);
-		const _maxS = max(
-			responseData.sentiments.map(sentiment => sentiment.score)
-		);
-		const _meanS = mean(
-			responseData.sentiments.map(sentiment => sentiment.score)
-		);
-		const _medianS = median(
-			responseData.sentiments.map(sentiment => sentiment.score)
-		);
-		const _stdDevS = standardDeviation(
-			responseData.sentiments.map(sentiment => sentiment.score)
-		);
+		const data = responseData.sentiments;
+		processStats(data);
 
-		const _minT = min(
-			responseData.sentiments.map(sentiment => sentiment.tweetsCount)
-		);
-		const _maxT = max(
-			responseData.sentiments.map(sentiment => sentiment.tweetsCount)
-		);
-		const _meanT = mean(
-			responseData.sentiments.map(sentiment => sentiment.tweetsCount)
-		);
-		const _medianT = median(
-			responseData.sentiments.map(sentiment => sentiment.tweetsCount)
-		);
-		const _stdDevT = standardDeviation(
-			responseData.sentiments.map(sentiment => sentiment.tweetsCount)
-		);
-		responseData.sentiments.forEach(sentiment => {
+		data.forEach(sentiment => {
 			dataLabels.push(format(new Date(sentiment.end_date), 'MM-dd-yy'));
 			data1.push(parseInt(sentiment.score));
 			data2.push(parseInt(sentiment.tweetsCount));
@@ -107,22 +94,8 @@ const ChartWrapper = props => {
 			fromDate: params.fromDate,
 			toDate: params.toDate
 		});
-		setSentimentStats({
-			_minS,
-			_maxS,
-			_meanS,
-			_medianS,
-			_stdDevS
-		});
-		setTweetCountStats({
-			_minT,
-			_maxT,
-			_meanT,
-			_medianT,
-			_stdDevT
-		});
 		setData({ dataLabels, data1, data2 });
-	};
+	}, []);
 
 	useEffect(
 		() => {
@@ -146,7 +119,7 @@ const ChartWrapper = props => {
 						false
 					);
 					const responseData = await sendRequest(props.path, params);
-					await processResponse(responseData, params);
+					processResponse(responseData, params);
 				} catch (err) {}
 			}
 			init();
@@ -156,10 +129,42 @@ const ChartWrapper = props => {
 			setFormData,
 			props.from,
 			props.to,
-			props.path
+			props.path,
+			processResponse
 		]
 	);
 
+	const processStats = async data => {
+		const _countS = data.length;
+		const _minS = min(data.map(item => item.score));
+		const _maxS = max(data.map(item => item.score));
+		const _meanS = mean(data.map(item => item.score));
+		const _medianS = median(data.map(item => item.score));
+		const _stdDevS = standardDeviation(data.map(item => item.score));
+
+		const _minT = min(data.map(item => item.tweetsCount));
+		const _maxT = max(data.map(item => item.tweetsCount));
+		const _meanT = mean(data.map(item => item.tweetsCount));
+		const _medianT = median(data.map(item => item.tweetsCount));
+		const _stdDevT = standardDeviation(data.map(item => item.tweetsCount));
+
+		setSentimentStats({
+			_countS,
+			_minS,
+			_maxS,
+			_meanS,
+			_medianS,
+			_stdDevS
+		});
+
+		setTweetCountStats({
+			_minT,
+			_maxT,
+			_meanT,
+			_medianT,
+			_stdDevT
+		});
+	};
 	const chartsSubmitHandler = async event => {
 		event.preventDefault();
 		const params = {
@@ -171,6 +176,11 @@ const ChartWrapper = props => {
 			const responseData = await sendRequest(props.path, params);
 			await processResponse(responseData, params);
 		} catch (err) {}
+	};
+
+	const fileImportHandler = async data => {
+		console.log(JSON.stringify(data));
+		setFileImport(data);
 	};
 
 	if (isLoading) {
@@ -189,6 +199,7 @@ const ChartWrapper = props => {
 					lineChart={props.lineChart}
 					title={props.title}
 					data={data}
+					extraData={fileImport}
 					data1Label={props.label1}
 					data2Label={props.label2}
 					hAxisTitle={`From ${format(
@@ -196,6 +207,7 @@ const ChartWrapper = props => {
 						'MM-yyyy'
 					)} to ${format(new Date(chartInputs.toDate), 'MM-yyyy')}`}
 				/>
+				<FileImporter onFileImported={fileImportHandler} />
 				<ErrorModal error={error} onClear={clearError} />
 				<form onSubmit={chartsSubmitHandler}>
 					{isLoading && <LoadingSpinner asOverlay />}
@@ -232,6 +244,19 @@ const ChartWrapper = props => {
 					<Button type='submit' disabled={!formState.isValid}>
 						Display Chart
 					</Button>
+					{/* <Input
+						ClassName='form-toggle'
+						id='toggle'
+						type='checkbox'
+						validators={[
+							VALIDATOR_IGNORE()
+						]}
+						labelPosition='right'
+						initialValid={true}
+						label='Check'
+						onInput={inputHandler}
+						defaulChecked={true}
+					/> */}
 				</form>
 				<StatWrapper>
 					{`Sentiment Stats: min: ${sentimentStats._minS}, 
@@ -246,6 +271,9 @@ const ChartWrapper = props => {
 						mean: ${tweetcountStats._meanT.toFixed(2)},
 						median: ${tweetcountStats._medianT.toFixed(2)},
 					standard deviation: ${tweetcountStats._stdDevT.toFixed(2)}`}
+				</StatWrapper>
+				<StatWrapper>
+					{`Number of records: ${sentimentStats._countS}`}
 				</StatWrapper>
 			</DivWrapper>
 		</React.Fragment>

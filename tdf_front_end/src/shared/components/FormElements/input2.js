@@ -22,7 +22,7 @@ const Input = (props) => {
 
 	return (
 		<>
-			<StyledInputWrapper className={isInvalid && 'form-control--invalid'}  fontSize={props.fontSize || '1em'}>
+			<StyledInputWrapper className={isInvalid && 'form-control--invalid'}  fontSize={props.fontSize}>
 				{(props.type !== 'checkbox' || props.labelPosition === 'left') && <StyledLabel htmlFor={props.id}>{props.label}</StyledLabel>}
 				{props.type === 'checkbox' 
 					?
@@ -72,9 +72,9 @@ const Input = (props) => {
 export default Input;
 
 const StyledInputWrapper = styled.div`
-	display: inline-block;
+	display: inherit;
 	font-size: ${props => props.fontSize};
-	font-family: ${setFont.controls};
+	font-family: ${setFont.main};
 
 	&.form-control--invalid label,
 	&.form-control--invalid p {
@@ -111,7 +111,7 @@ const StyledCheckbox = styled.input`
 	height: 1em;
 	border: none;
 	background: none;
-	border: 1px solid ${setColor.mainBlack};
+	border: 1px solid ${setColor.borderClrCtrls};
 	vertical-align: -11px;
 	outline: none;
 	padding: ${setRem(1)} ${setRem(1)};

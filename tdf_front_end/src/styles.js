@@ -4,13 +4,16 @@ export const setColor = {
 	tweetBlue: '#2cb1ff',
 	hairYellow: '#fee71d',
 	bkgndBlue: '#2a39f6',
+	noticeMeRed: '#ff0055',
+	hoverNoticeMeRed: '#ff4382',
+	disabledBgnd: '#ccc',
+	disabledColor: '#979797',
+	chartYellow: '#ffffca',
 	primaryColor: '#af9a7d',
 	mainWhite: '#fff',
 	mainBlack: '#222',
 	borderClrCtrls: '#ececec',
 	bgndClrCtrls: '#f7f7f7',
-	disabledGrey: '#ddd',
-	disabledBlack: '#6666',
 	hoverGrey: '#ececea',
 	greyText: '#898989',
 	highLightForgnd: '#d9f2fb',
@@ -20,7 +23,7 @@ export const setColor = {
 export const setFont = {
 	main: "'Arvo', serif",
 	second: "'Lato', sans-serif",
-	third: "'Bree Serif', serif"
+	controls: "'Archivo', sans-serif"
 };
 
 export const setFlex = ({ x = 'center', y = 'center' } = {}) => {

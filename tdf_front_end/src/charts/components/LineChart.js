@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js';
 import styled from 'styled-components';
-import { rem2Px, setFont } from '../../styles';
+import { rem2Px, setFont, setColor } from '../../styles';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+Chart.defaults.global.defaultFontFamily = setFont.main;
 Chart.defaults.global.legend.display = true;
 Chart.defaults.global.elements.line.tension = 0.1;
 
@@ -12,15 +14,19 @@ const LineChart = props => {
 
 	useEffect(
 		() => {
-			const { dataLabels, data1, data2 } = props.data;
+			const { dataLabels, data1, data2 = [] } = props.data;
+			const extraData = props.extraData;
+
 			if (lineChart.current !== null) {
 				lineChart.current.destroy();
 			}
 			const ctx = canvasRef.current.getContext('2d');
 			lineChart.current = new Chart(ctx, {
+				plugins: [
+					ChartDataLabels
+				],
 				type: 'line',
 				data: {
-					//Bring in data
 					labels: dataLabels,
 
 					datasets: [
@@ -28,26 +34,44 @@ const LineChart = props => {
 							label: props.data1Label,
 							data: data1,
 							fill: false,
-							borderColor: 'blue',
+							borderColor: setColor.bkgndBlue,
 							borderWidth: 2,
-							pointRadius: 0
+							pointRadius: 1,
+							backgroundColor: setColor.chartYellow,
+							datalabels: {
+								display: false
+							}
 						},
 						{
 							label: props.data2Label,
 							data: data2,
 							fill: false,
-							borderColor: 'red',
+							borderColor: setColor.noticeMeRed,
 							borderWidth: 2,
-							pointRadius: 0,
-							backgroundColor: '#ffffca'
+							pointRadius: 1,
+							backgroundColor: setColor.chartYellow,
+							datalabels: {
+								display: true
+							}
 						}
 					]
 				},
 				options: {
+					plugins: {
+						datalabels: {
+							display: false,
+							rotation: 280,
+							align: 'end',
+							formatter: function (value, context) {
+								return extraData[context.dataIndex]
+									? extraData[context.dataIndex].value
+									: '';
+							}
+						}
+					},
 					title: {
 						display: true,
-						fontFamily: setFont.third,
-						fontSize: rem2Px(2),
+						fontSize: rem2Px(2.5),
 						text: props.title
 					},
 					tooltips: {
@@ -92,15 +116,11 @@ const LineChart = props => {
 					}
 				}
 			});
-
-			// let gradientLine = chartRef.createLinearGradient(0, 0, 0, graphHeight);
-			// gradientLine.addColorStop(0, 'rgb(255, 0, 110, 0.2)');
-			// gradientLine.addColorStop(0.5, 'rgb(255, 0, 110, 0.35)');
-			// gradientLine.addColorStop(1, 'rgb(255, 0, 110, 0.7)');
 		},
 		[
 			props.id,
 			props.data,
+			props.extraData,
 			props.data1Label,
 			props.data2Label,
 			props.title
@@ -108,17 +128,16 @@ const LineChart = props => {
 	);
 
 	return (
-		<DivWrapper>
+		<DivWrapper fontSize={props.fontSize || '1em'}>
 			<canvas id={props.id} ref={canvasRef} />
 		</DivWrapper>
 	);
 };
 
 export default LineChart;
-
 const DivWrapper = styled.div`
-	width: 75vw;
-	height: 35vh;
+	width: 90vw;
+	height: 60vh;
 	background: #ffffe0;
 	padding: 30px 20px 10px 20px;
 	border-radius: 10px;
