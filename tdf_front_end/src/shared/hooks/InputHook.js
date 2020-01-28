@@ -29,10 +29,7 @@ const inputReducer = (state, action) => {
 export const useInputHook = props => {
 	const isCheckbox = props.checkbox || false;
 
-	const [
-		inputState,
-		dispatch
-	] = useReducer(inputReducer, {
+	const [ inputState, dispatch ] = useReducer(inputReducer, {
 		value: props.initialValue || '',
 		isTouched: false,
 		isValid: props.initialValid || isCheckbox || false
@@ -56,11 +53,7 @@ export const useInputHook = props => {
 		});
 	};
 
-	return [
-		inputState,
-		changeHandler,
-		touchHandler
-	];
+	return [ inputState, changeHandler, touchHandler ];
 };
 
 export default useInputHook;

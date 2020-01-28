@@ -12,7 +12,7 @@ import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/formHook';
 import { useHttpClient } from '../../shared/hooks/httpHook';
 import LineChart from './LineChart';
-import FileImporter from './FileImporter';
+//import FileImporter from './FileImporter';
 
 const ChartWrapper = props => {
 	// encapsulates the fetch request
@@ -20,7 +20,7 @@ const ChartWrapper = props => {
 	// data returned by the fetch to the server
 	const [ data, setData ] = useState([]);
 	// file import array of text like news headlines to put on the chart
-	const [ fileImport, setFileImport ] = useState([]);
+	// const [ fileImport, setFileImport ] = useState([]);
 	const [ sentimentStats, setSentimentStats ] = useState({
 		_countS: 0,
 		_minS: 0,
@@ -107,6 +107,7 @@ const ChartWrapper = props => {
 			sendRequest,
 			processResponse,
 			setFormData,
+			props,
 			props.currentTemplate.defaultQuery,
 			props.currentTemplate.path
 		]
@@ -159,10 +160,10 @@ const ChartWrapper = props => {
 		} catch (err) {}
 	};
 
-	const fileImportHandler = async data => {
-		console.log(JSON.stringify(data));
-		setFileImport(data);
-	};
+	// const fileImportHandler = async data => {
+	// 	console.log(JSON.stringify(data));
+	// 	setFileImport(data);
+	// };
 
 	if (isLoading) {
 		return (
@@ -179,7 +180,7 @@ const ChartWrapper = props => {
 					id={props.currentTemplate.id}
 					title={props.currentTemplate.title}
 					data={data}
-					extraData={fileImport}
+					// extraData={fileImport}
 					data1Label={props.currentTemplate.sentimentsLabel}
 					data2Label={props.currentTemplate.tweetsLabel}
 					hAxisTitle={`From ${format(
@@ -187,7 +188,7 @@ const ChartWrapper = props => {
 						'MM-yyyy'
 					)} to ${format(new Date(hAxisTitleState.toDate), 'MM-yyyy')}`}
 				/>
-				<FileImporter onFileImported={fileImportHandler} />
+				{/* <FileImporter onFileImported={fileImportHandler} /> */}
 				<ErrorModal error={error} onClear={clearError} />
 				<form onSubmit={chartsSubmitHandler}>
 					{isLoading && <LoadingSpinner asOverlay />}

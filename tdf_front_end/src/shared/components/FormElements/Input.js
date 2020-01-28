@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import { setColor, px2Rem, setFont } from '../../../styles';
 import useInputHook from '../../hooks/InputHook'
-import { VALIDATOR_IGNORE } from '../../util/validators';
 
 const Input = (props) => {
 	const [inputState, changeHandler, touchHandler] = useInputHook(props);
@@ -35,7 +34,6 @@ const Input = (props) => {
 								onChange={changeHandler}
 								onBlur={touchHandler}
 								initialValid={true}
-								validators={[VALIDATOR_IGNORE()]}
 								errorText="Nothing to see here."
 							/>
 							<ToggleSlider />

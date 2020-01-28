@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ChartWrapper from '../components/ChartWrapper';
-import { VALIDATOR_IGNORE } from '../../shared/util/validators';
 import { daily, weekly } from '../components/chartTemplate';
+import { VALIDATOR_IGNORE } from '../../shared/util/validators';
 import Input from '../../shared/components/FormElements/Input';
 
 const Analysis = () => {
@@ -22,9 +22,12 @@ const Analysis = () => {
 				</h4>
 			</EsplainItToMe>
 			<DivWrapper>
-				<ChartWrapper currentTemplate={chartTemplate} />
+				<ChartWrapper
+					currentTemplate={chartTemplate}
+					switchInputHandler={inputHandler}
+				/>
 			</DivWrapper>
-			<ControlWrapper>
+			<ToggleWrapper>
 				<Input
 					id='toggle'
 					type='checkbox'
@@ -40,7 +43,7 @@ const Analysis = () => {
 					}
 					onInput={inputHandler}
 				/>
-			</ControlWrapper>
+			</ToggleWrapper>
 		</React.Fragment>
 	);
 };
@@ -58,4 +61,4 @@ const EsplainItToMe = styled.div`
 	margin: 20px;
 `;
 
-const ControlWrapper = styled.nav`margin: 5px 0 5px;`;
+const ToggleWrapper = styled.div`margin: 5px 0 5px;`;

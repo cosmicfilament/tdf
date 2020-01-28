@@ -15,7 +15,7 @@ const LineChart = props => {
 	useEffect(
 		() => {
 			const { dataLabels, data1, data2 = [] } = props.data;
-			const extraData = props.extraData;
+			//	const extraData = props.extraData;
 
 			if (lineChart.current !== null) {
 				lineChart.current.destroy();
@@ -59,12 +59,12 @@ const LineChart = props => {
 						datalabels: {
 							display: false,
 							rotation: 280,
-							align: 'end',
-							formatter: function (value, context) {
-								return extraData[context.dataIndex]
-									? extraData[context.dataIndex].value
-									: '';
-							}
+							align: 'end'
+							// formatter: function (value, context) {
+							// 	return extraData[context.dataIndex]
+							// 		? extraData[context.dataIndex].value
+							// 		: '';
+							// }
 						}
 					},
 					title: {
