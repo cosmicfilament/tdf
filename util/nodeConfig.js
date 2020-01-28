@@ -26,6 +26,7 @@ nodeConfig.LOG_DIR = 'logs';
 nodeConfig.LOG_ROTATION_CHECK = 1000 * 60 * 59;
 
 // mongodb
+nodeConfig.USE_LOCAL_DB = process.env.USE_LOCAL_DB === 'true' ? true : false;
 nodeConfig.DB_CLUSTER = process.env.DB_CLUSTER;
 nodeConfig.DBASE = process.env.DBASE;
 nodeConfig.DB_USER = process.env.DB_USER;
