@@ -21,12 +21,6 @@ const Analysis = () => {
 					of tweets generated.
 				</h4>
 			</EsplainItToMe>
-			<DivWrapper>
-				<ChartWrapper
-					currentTemplate={chartTemplate}
-					switchInputHandler={inputHandler}
-				/>
-			</DivWrapper>
 			<ToggleWrapper>
 				<Input
 					id='toggle'
@@ -44,6 +38,12 @@ const Analysis = () => {
 					onInput={inputHandler}
 				/>
 			</ToggleWrapper>
+			<DivWrapper>
+				<ChartWrapper
+					currentTemplate={chartTemplate}
+					switchInputHandler={inputHandler}
+				/>
+			</DivWrapper>
 		</React.Fragment>
 	);
 };

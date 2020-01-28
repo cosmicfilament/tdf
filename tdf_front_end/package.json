@@ -7,7 +7,6 @@
 		"chart.js": "^2.9.3",
 		"chartjs-plugin-datalabels": "^0.7.0",
 		"date-fns": "^2.9.0",
-		"flatfile-csv-importer": "^0.2.6",
 		"react": "^16.12.0",
 		"react-app-rewire-styled-components": "^3.0.2",
 		"react-dom": "^16.12.0",

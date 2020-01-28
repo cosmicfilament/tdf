@@ -15,7 +15,6 @@ const LineChart = props => {
 	useEffect(
 		() => {
 			const { dataLabels, data1, data2 = [] } = props.data;
-			//	const extraData = props.extraData;
 
 			if (lineChart.current !== null) {
 				lineChart.current.destroy();
@@ -49,24 +48,12 @@ const LineChart = props => {
 							pointRadius: 1,
 							backgroundColor: setColor.chartYellow,
 							datalabels: {
-								display: true
+								display: false
 							}
 						}
 					]
 				},
 				options: {
-					plugins: {
-						datalabels: {
-							display: false,
-							rotation: 280,
-							align: 'end'
-							// formatter: function (value, context) {
-							// 	return extraData[context.dataIndex]
-							// 		? extraData[context.dataIndex].value
-							// 		: '';
-							// }
-						}
-					},
 					title: {
 						display: true,
 						fontSize: rem2Px(2.5),
@@ -99,6 +86,10 @@ const LineChart = props => {
 								gridLines: {
 									display: false,
 									drawBorder: true
+								},
+								scaleLabel: {
+									display: true,
+									labelString: props.xAxisTitle
 								}
 							}
 						],
@@ -118,7 +109,7 @@ const LineChart = props => {
 		[
 			props.id,
 			props.data,
-			props.extraData,
+			props.xAxisTitle,
 			props.data1Label,
 			props.data2Label,
 			props.title

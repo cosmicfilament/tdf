@@ -12,15 +12,12 @@ import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/formHook';
 import { useHttpClient } from '../../shared/hooks/httpHook';
 import LineChart from './LineChart';
-//import FileImporter from './FileImporter';
 
 const ChartWrapper = props => {
 	// encapsulates the fetch request
 	const { isLoading, error, sendRequest, clearError } = useHttpClient();
 	// data returned by the fetch to the server
 	const [ data, setData ] = useState([]);
-	// file import array of text like news headlines to put on the chart
-	// const [ fileImport, setFileImport ] = useState([]);
 	const [ sentimentStats, setSentimentStats ] = useState({
 		_countS: 0,
 		_minS: 0,
@@ -37,7 +34,7 @@ const ChartWrapper = props => {
 		_stdDevT: 0
 	});
 	// holds the hAxis Title which gets updated as the query changes
-	const [ hAxisTitleState, sethAxisTitleState ] = useState(
+	const [ xAxisTitleState, setxAxisTitleState ] = useState(
 		props.currentTemplate.defaultQuery
 	);
 	// hook that maintains the form state
@@ -73,7 +70,7 @@ const ChartWrapper = props => {
 			data1.push(0);
 			data2.push(0);
 		}
-		sethAxisTitleState(params);
+		setxAxisTitleState(params);
 		setData({ dataLabels, data1, data2 });
 	}, []);
 
@@ -160,11 +157,6 @@ const ChartWrapper = props => {
 		} catch (err) {}
 	};
 
-	// const fileImportHandler = async data => {
-	// 	console.log(JSON.stringify(data));
-	// 	setFileImport(data);
-	// };
-
 	if (isLoading) {
 		return (
 			<div className='center'>
@@ -180,15 +172,13 @@ const ChartWrapper = props => {
 					id={props.currentTemplate.id}
 					title={props.currentTemplate.title}
 					data={data}
-					// extraData={fileImport}
 					data1Label={props.currentTemplate.sentimentsLabel}
 					data2Label={props.currentTemplate.tweetsLabel}
-					hAxisTitle={`From ${format(
-						new Date(hAxisTitleState.fromDate),
+					xAxisTitle={`From ${format(
+						new Date(xAxisTitleState.fromDate),
 						'MM-yyyy'
-					)} to ${format(new Date(hAxisTitleState.toDate), 'MM-yyyy')}`}
+					)} to ${format(new Date(xAxisTitleState.toDate), 'MM-yyyy')}`}
 				/>
-				{/* <FileImporter onFileImported={fileImportHandler} /> */}
 				<ErrorModal error={error} onClear={clearError} />
 				<form onSubmit={chartsSubmitHandler}>
 					{isLoading && <LoadingSpinner asOverlay />}
