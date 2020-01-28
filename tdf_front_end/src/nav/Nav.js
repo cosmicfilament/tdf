@@ -2,13 +2,10 @@ import React, { Fragment, useState, useLayoutEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { TiThMenu } from 'react-icons/ti';
 import Logo from './Logo';
-//import { StyledNav } from '../../shared/styles/NavStyles';
+import { screenWidth } from '../styles';
 
 import styled from 'styled-components/macro';
-import { setColor, media } from '../../styles';
-
-// same as in app.scss
-const DEFAULT_WINDOW_SIZE = 768;
+import { setColor, media } from '../styles';
 
 const Nav = () => {
 	const [
@@ -38,7 +35,7 @@ const Nav = () => {
 	});
 
 	const handleWindowResize = () => {
-		if (window.innerWidth >= DEFAULT_WINDOW_SIZE && isDisplayed) {
+		if (window.innerWidth >= screenWidth.phablet && isDisplayed) {
 			setDisplayed(false);
 			setUlClass('nav-menu-normal');
 		}

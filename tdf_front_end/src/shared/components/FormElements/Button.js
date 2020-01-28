@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { setColor, setRem, setFont } from '../../../styles';
+import { setColor, setFont } from '../../../styles';
 
 const Button = props => {
 	return (

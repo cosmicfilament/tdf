@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TiArrowDownThick, TiArrowUpThick } from '../../nav/react-icons/ti';
+import { TiArrowDownThick, TiArrowUpThick } from '../../../nav/react-icons/ti';
 
 const SortButton = props => {
 	return (

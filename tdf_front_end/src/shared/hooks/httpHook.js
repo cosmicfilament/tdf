@@ -14,14 +14,8 @@ export const makeURL = (url, path, params) => {
 };
 
 export const useHttpClient = () => {
-	const [
-		isLoading,
-		setIsLoading
-	] = useState(false);
-	const [
-		error,
-		setError
-	] = useState();
+	const [ isLoading, setIsLoading ] = useState(false);
+	const [ error, setError ] = useState();
 
 	const activeHttpRequests = useRef([]);
 

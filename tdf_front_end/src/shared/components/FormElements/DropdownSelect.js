@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { setColor } from '../../styles';
 
-import useMultiSelHook from '../../hooks/MultiSelHook';
+import useMultiSelHook from '../../hooks/multiSelHook';
 
 const DropdownSelect = props => {
 	const { fontSize, id, label, placeholder, children } = props;
@@ -109,7 +109,7 @@ const StyledSelectWrapper = styled.div`
 		outline: 0;
 
 		& .selection {
-			box-shadow: 0 0 1px 1px ${setColor.borderClrCtrls};
+			box-shadow: 0 0 1px 1px ${setColor.inputBorder};
 		}
 	}
 
@@ -136,11 +136,11 @@ const StyledSelectLabel = styled.label`
 const StyledSelect = styled.div`
 	position: relative;
 	padding: 5px;
-	border: 1px solid ${setColor.borderClrCtrls};
+	border: 1px solid ${setColor.inputBorder};
 	background: #fff;
 
 	:hover {
-		background-color: ${setColor.hoverGrey};
+		background-color: ${setColor.inputHover};
 	}
 `;
 
@@ -169,7 +169,7 @@ const StyledOptionsWrapper = styled.div`
 	top: 100%;
 	left: 0;
 	right: 0;
-	border: solid ${setColor.borderClrCtrls};
+	border: solid ${setColor.inputBorder};
 	border-width: 0 1px;
 	background: #fff;
 `;
@@ -180,14 +180,14 @@ const StyledSelectOption = styled.div`
 	cursor: pointer;
 
 	&.selected {
-		border: 1px solid ${setColor.borderClrCtrls};
+		border: 1px solid ${setColor.inputBorder};
 		margin: -1px -1px 0;
 		background: ${setColor.highLightForgnd};
 	}
 
 	.focused,
 	&:hover {
-		background: ${setColor.hoverGrey};
+		background: ${setColor.inputHover};
 	}
 `;
 
@@ -198,14 +198,14 @@ const StyledSelectOptionValue = styled.span`
 	width: 16px;
 	height: 16px;
 	padding: 2px;
-	border: 1px solid ${setColor.borderClrCtrls};
+	border: 1px solid ${setColor.inputBorder};
 	border-radius: 2px;
 	margin: 2px 12px 0 0;
 	color: #fff;
 	font-size: 10px;
 
 	.selected & {
-		border-color: ${setColor.borderClrCtrls};
+		border-color: ${setColor.inputBorder};
 		background: ${setColor.highLightbgnd};
 	}
 `;

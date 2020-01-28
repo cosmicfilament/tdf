@@ -90,11 +90,11 @@ const StyledInputWrapper = styled.div`
 
 const StyledInput = styled.input`
 	margin-right: 10px;
-	border: 2px solid ${setColor.borderClrCtrls};
-	background: ${setColor.bgndClrCtrls};
+	border: 2px solid ${setColor.inputBorder};
+	background: ${setColor.inputBkgnd};
 	font-size: 1em;
 	:hover {
-		background: ${setColor.hoverGrey};
+		background: ${setColor.inputHover};
 	}
 `;
 
@@ -111,7 +111,7 @@ const StyledCheckbox = styled.input`
 	height: 1em;
 	border: none;
 	background: none;
-	border: 1px solid ${setColor.borderClrCtrls};
+	border: 1px solid ${setColor.inputBorder};
 	vertical-align: -11px;
 	outline: none;
 	padding: ${setRem(1)} ${setRem(1)};
@@ -136,7 +136,7 @@ const StyledCheckbox = styled.input`
 
 	:hover {
 		not:checked{
-			background: ${setColor.hoverGrey};
+			background: ${setColor.inputHover};
 		}
 		:checked{
 			background: ${setColor.disabledBlack}
@@ -146,6 +146,6 @@ const StyledCheckbox = styled.input`
 	:disabled {
 		border-color: ${setColor.disabledBlack};
 		background: ${setColor.disabledGrey};
-		color: ${setColor.borderClrCtrls};
+		color: ${setColor.inputBorder};
 	}
 `;

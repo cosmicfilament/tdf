@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ChartWrapper from '../components/ChartWrapper';
-import reactConfig from '../../shared/util/reactConfig';
+import { VALIDATOR_IGNORE } from '../../shared/util/validators';
+import { daily, weekly } from '../components/chartTemplate';
+import Input from '../../shared/components/FormElements/Input';
 
 const Analysis = () => {
+	const [ chartTemplate, setChartTemplate ] = useState(daily);
+
+	const inputHandler = (id, value, isValid) => {
+		setChartTemplate(value === true ? weekly : daily);
+	};
+
 	return (
 		<React.Fragment>
 			<EsplainItToMe>
@@ -13,32 +21,26 @@ const Analysis = () => {
 					of tweets generated.
 				</h4>
 			</EsplainItToMe>
-			{/* <DivWrapper>
-				<ChartWrapper
-					id={0}
-					title='Weekly Tweet Sentiment'
-					label1='Sentiment'
-					label2='Tweet Count'
-					from={reactConfig.TRUMP_TWEET_START_DATE}
-					to={reactConfig.TODAY}
-					min={reactConfig.TRUMP_TWEET_START_DATE}
-					max={reactConfig.TODAY}
-					path={reactConfig.WEEKLY_SENTIMENT_PATH}
-				/>
-			</DivWrapper> */}
 			<DivWrapper>
-				<ChartWrapper
-					id={1}
-					title='Daily Tweet Sentiment'
-					label1='Sentiment'
-					label2='Tweet Count'
-					from={reactConfig.ONE_YEAR_AGO}
-					to={reactConfig.TODAY}
-					min={reactConfig.TRUMP_TWEET_START_DATE}
-					max={reactConfig.TODAY}
-					path={reactConfig.DAILY_SENTIMENT_PATH}
-				/>
+				<ChartWrapper currentTemplate={chartTemplate} />
 			</DivWrapper>
+			<ControlWrapper>
+				<Input
+					id='toggle'
+					type='checkbox'
+					validators={[ VALIDATOR_IGNORE() ]}
+					labelPosition='right'
+					initialValid={true}
+					label={
+						chartTemplate.name === 'daily' ? (
+							'Switch to Weekly Sentiment'
+						) : (
+							'Switch to Daily Sentiment'
+						)
+					}
+					onInput={inputHandler}
+				/>
+			</ControlWrapper>
 		</React.Fragment>
 	);
 };
@@ -55,3 +57,5 @@ const EsplainItToMe = styled.div`
 	height: auto;
 	margin: 20px;
 `;
+
+const ControlWrapper = styled.nav`margin: 5px 0 5px;`;

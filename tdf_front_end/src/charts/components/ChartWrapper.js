@@ -8,34 +8,20 @@ import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-import {
-	VALIDATOR_REQUIRE,
-	VALIDATOR_IGNORE
-} from '../../shared/util/validators';
+import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/formHook';
 import { useHttpClient } from '../../shared/hooks/httpHook';
-import reactConfig from '../../shared/util/reactConfig';
 import LineChart from './LineChart';
 import FileImporter from './FileImporter';
 
 const ChartWrapper = props => {
+	// encapsulates the fetch request
 	const { isLoading, error, sendRequest, clearError } = useHttpClient();
-	const [
-		chartInputs,
-		setChartInputs
-	] = useState({
-		fromDate: props.from,
-		toDate: props.to
-	});
-	const [
-		fileImport,
-		setFileImport
-	] = useState([]);
-
-	const [
-		sentimentStats,
-		setSentimentStats
-	] = useState({
+	// data returned by the fetch to the server
+	const [ data, setData ] = useState([]);
+	// file import array of text like news headlines to put on the chart
+	const [ fileImport, setFileImport ] = useState([]);
+	const [ sentimentStats, setSentimentStats ] = useState({
 		_countS: 0,
 		_minS: 0,
 		_maxS: 0,
@@ -43,33 +29,30 @@ const ChartWrapper = props => {
 		_medianS: 0,
 		_stdDevS: 0
 	});
-
-	const [
-		tweetcountStats,
-		setTweetCountStats
-	] = useState({ _minT: 0, _maxT: 0, _meanT: 0, _medianT: 0, _stdDevT: 0 });
-
-	const [
-		data,
-		setData
-	] = useState([]);
-
-	const [
-		formState,
-		inputHandler,
-		setFormData
-	] = useForm(
+	const [ tweetcountStats, setTweetCountStats ] = useState({
+		_minT: 0,
+		_maxT: 0,
+		_meanT: 0,
+		_medianT: 0,
+		_stdDevT: 0
+	});
+	// holds the hAxis Title which gets updated as the query changes
+	const [ hAxisTitleState, sethAxisTitleState ] = useState(
+		props.currentTemplate.defaultQuery
+	);
+	// hook that maintains the form state
+	const [ formState, inputHandler, setFormData ] = useForm(
 		{
 			fromDate: {
-				value: props.from,
+				value: props.currentTemplate.defaultQuery.fromDate,
 				isValid: true
 			},
 			toDate: {
-				value: props.to,
+				value: props.currentTemplate.defaultQuery.toDate,
 				isValid: true
 			}
 		},
-		false
+		true
 	);
 
 	const processResponse = useCallback((responseData, params) => {
@@ -90,10 +73,7 @@ const ChartWrapper = props => {
 			data1.push(0);
 			data2.push(0);
 		}
-		setChartInputs({
-			fromDate: params.fromDate,
-			toDate: params.toDate
-		});
+		sethAxisTitleState(params);
 		setData({ dataLabels, data1, data2 });
 	}, []);
 
@@ -101,36 +81,34 @@ const ChartWrapper = props => {
 		() => {
 			async function init () {
 				try {
-					const params = {
-						fromDate: props.from,
-						toDate: props.to
-					};
 					setFormData(
 						{
 							fromDate: {
-								value: props.from,
+								value: props.currentTemplate.defaultQuery.fromDate,
 								isValid: true
 							},
 							toDate: {
-								value: props.to,
+								value: props.currentTemplate.defaultQuery.toDate,
 								isValid: true
 							}
 						},
-						false
+						true
 					);
-					const responseData = await sendRequest(props.path, params);
-					processResponse(responseData, params);
+					const responseData = await sendRequest(
+						props.currentTemplate.path,
+						props.currentTemplate.defaultQuery
+					);
+					processResponse(responseData, props.currentTemplate.defaultQuery);
 				} catch (err) {}
 			}
 			init();
 		},
 		[
 			sendRequest,
+			processResponse,
 			setFormData,
-			props.from,
-			props.to,
-			props.path,
-			processResponse
+			props.currentTemplate.defaultQuery,
+			props.currentTemplate.path
 		]
 	);
 
@@ -173,7 +151,10 @@ const ChartWrapper = props => {
 		};
 
 		try {
-			const responseData = await sendRequest(props.path, params);
+			const responseData = await sendRequest(
+				props.currentTemplate.path,
+				params
+			);
 			await processResponse(responseData, params);
 		} catch (err) {}
 	};
@@ -195,17 +176,16 @@ const ChartWrapper = props => {
 		<React.Fragment>
 			<DivWrapper>
 				<LineChart
-					id={props.id}
-					lineChart={props.lineChart}
-					title={props.title}
+					id={props.currentTemplate.id}
+					title={props.currentTemplate.title}
 					data={data}
 					extraData={fileImport}
-					data1Label={props.label1}
-					data2Label={props.label2}
+					data1Label={props.currentTemplate.sentimentsLabel}
+					data2Label={props.currentTemplate.tweetsLabel}
 					hAxisTitle={`From ${format(
-						new Date(chartInputs.fromDate),
+						new Date(hAxisTitleState.fromDate),
 						'MM-yyyy'
-					)} to ${format(new Date(chartInputs.toDate), 'MM-yyyy')}`}
+					)} to ${format(new Date(hAxisTitleState.toDate), 'MM-yyyy')}`}
 				/>
 				<FileImporter onFileImported={fileImportHandler} />
 				<ErrorModal error={error} onClear={clearError} />
@@ -216,47 +196,30 @@ const ChartWrapper = props => {
 						id='fromDate'
 						type='date'
 						label='From Date:'
-						validators={[
-							VALIDATOR_REQUIRE()
-						]}
+						validators={[ VALIDATOR_REQUIRE() ]}
 						errorText='Please select or enter a valid date.'
 						onInput={inputHandler}
 						initialValue={formState.inputs.fromDate.value}
 						initialValid={true}
-						min={reactConfig.TRUMP_TWEET_START_DATE}
-						max={formState.inputs.toDate.value}
+						min={props.currentTemplate.min}
+						max={props.currentTemplate.max}
 					/>
 					<Input
 						className='form-input'
 						id='toDate'
 						type='date'
 						label='To Date:'
-						validators={[
-							VALIDATOR_REQUIRE()
-						]}
+						validators={[ VALIDATOR_REQUIRE() ]}
 						errorText='Please select or enter a valid date.'
 						onInput={inputHandler}
 						initialValid={true}
 						initialValue={formState.inputs.toDate.value}
-						min={reactConfig.TRUMP_TWEET_START_DATE}
-						max={reactConfig.TODAY}
+						min={props.currentTemplate.min}
+						max={props.currentTemplate.max}
 					/>
 					<Button type='submit' disabled={!formState.isValid}>
 						Display Chart
 					</Button>
-					{/* <Input
-						ClassName='form-toggle'
-						id='toggle'
-						type='checkbox'
-						validators={[
-							VALIDATOR_IGNORE()
-						]}
-						labelPosition='right'
-						initialValid={true}
-						label='Check'
-						onInput={inputHandler}
-						defaulChecked={true}
-					/> */}
 				</form>
 				<StatWrapper>
 					{`Sentiment Stats: min: ${sentimentStats._minS}, 

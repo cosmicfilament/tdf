@@ -22,9 +22,7 @@ const LineChart = props => {
 			}
 			const ctx = canvasRef.current.getContext('2d');
 			lineChart.current = new Chart(ctx, {
-				plugins: [
-					ChartDataLabels
-				],
+				plugins: [ ChartDataLabels ],
 				type: 'line',
 				data: {
 					labels: dataLabels,

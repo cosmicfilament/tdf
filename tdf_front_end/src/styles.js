@@ -6,15 +6,17 @@ export const setColor = {
 	bkgndBlue: '#2a39f6',
 	noticeMeRed: '#ff0055',
 	hoverNoticeMeRed: '#ff4382',
+	toggleSelectedBlue: '#2a39f6',
+	toggleBkgnd: '#a9a9a9',
+	toggleHover: '#c9cdd0',
+	inputBkgnd: '#f7f7f7',
+	inputBorder: '#ececea',
 	disabledBgnd: '#ccc',
 	disabledColor: '#979797',
 	chartYellow: '#ffffca',
 	primaryColor: '#af9a7d',
 	mainWhite: '#fff',
 	mainBlack: '#222',
-	borderClrCtrls: '#ececec',
-	bgndClrCtrls: '#f7f7f7',
-	hoverGrey: '#ececea',
 	greyText: '#898989',
 	highLightForgnd: '#d9f2fb',
 	highLightbgnd: '#007da6'
@@ -46,7 +48,7 @@ export const setLetterSpacing = (number = 2) => {
 	return `letter-spacing:${number}px`;
 };
 
-const sizes = {
+export const screenWidth = {
 	large: 1200,
 	desktop: 1024,
 	tablet: 768,
@@ -55,9 +57,9 @@ const sizes = {
 };
 
 // Iterate through the sizes and create a media template
-export const media = Object.keys(sizes).reduce((acc, label) => {
+export const media = Object.keys(screenWidth).reduce((acc, label) => {
 	acc[label] = (...args) => css`
-		@media (min-width: ${sizes[label] / 16}em) {
+		@media (min-width: ${screenWidth[label] / 16}em) {
 			${css(...args)};
 		}
 	`;

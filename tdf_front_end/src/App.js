@@ -8,7 +8,7 @@ import {
 import GlobalStyles from './shared/styles/GlobalStyles';
 import Analysis from './charts/pages/Analysis';
 import Search from './search/pages/Search';
-import Nav from './shared/nav/Nav';
+import Nav from './nav/Nav';
 
 function App () {
 	let routes;
