@@ -5,6 +5,7 @@ import {
 	Redirect,
 	Switch
 } from 'react-router-dom';
+import Seo from './shared/util/seo';
 import GlobalStyles from './shared/styles/GlobalStyles';
 import Analysis from './charts/pages/Analysis';
 import Search from './search/pages/Search';
@@ -18,7 +19,7 @@ function App () {
 			<Route path='/' exact>
 				<Analysis />
 			</Route>
-			<Route path='/' exact>
+			<Route path='/search' exact>
 				<Search />
 			</Route>
 			<Redirect to='/' />
@@ -27,6 +28,7 @@ function App () {
 
 	return (
 		<React.Fragment>
+			<Seo />
 			<Router>
 				<Nav />
 				<GlobalStyles />

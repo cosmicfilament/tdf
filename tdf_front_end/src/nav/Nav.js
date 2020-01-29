@@ -8,14 +8,8 @@ import styled from 'styled-components/macro';
 import { setColor, media } from '../styles';
 
 const Nav = () => {
-	const [
-		isDisplayed,
-		setDisplayed
-	] = useState(false);
-	const [
-		ulClass,
-		setUlClass
-	] = useState('nav-menu-normal');
+	const [ isDisplayed, setDisplayed ] = useState(false);
+	const [ ulClass, setUlClass ] = useState('nav-menu-normal');
 
 	const toggleHamburgerIcon = () => {
 		setUlClass(!isDisplayed ? 'nav-menu-hamburger-show' : 'nav-menu-normal');
@@ -65,13 +59,8 @@ const Nav = () => {
 						</NavLink>
 					</li>
 					<li>
-						<NavLink to='/' exact>
+						<NavLink to='/search' exact>
 							SEARCH
-						</NavLink>
-					</li>
-					<li>
-						<NavLink to='/' exact>
-							LOGIN
 						</NavLink>
 					</li>
 				</ul>

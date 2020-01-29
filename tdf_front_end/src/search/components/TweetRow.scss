@@ -1,0 +1,47 @@
+.tweetrow-row {
+	line-height: 3vh;
+	padding: 5px 0;
+}
+
+.tweetrow-text {
+	background-color: lighten($color: $tweet-blue, $amount: 15%);
+}
+
+.tweetrow-link-button {
+	background-color: $tweet-blue;
+	border-style: none;
+	border-radius: 25%;
+	text-align: center;
+	text-decoration: none;
+}
+
+.tweetrow-link-button:hover {
+	font-weight: bold;
+	font-size: larger;
+}
+
+.tweetrow-tweet-count,
+.tweetrow-retweets {
+	cursor: pointer;
+}
+
+@media screen and (min-width: $min-width-phone-portrait) {
+	.tweetrow-row {
+		line-height: 5.75vh;
+		padding: 5px 0;
+	}
+}
+
+@media screen and (min-width: $min-width-tablet) {
+	.tweetrow-row {
+		line-height: 2.25vh;
+		padding: 5px 0;
+	}
+}
+
+@media screen and (min-width: $min-width-desktop) {
+	.tweetrow-row {
+		line-height: 1.75vh;
+		padding: 5px 0;
+	}
+}
