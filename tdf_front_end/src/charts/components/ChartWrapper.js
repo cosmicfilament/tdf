@@ -181,7 +181,7 @@ const ChartWrapper = props => {
 						validators={[ VALIDATOR_REQUIRE() ]}
 						errorText='Please select or enter a valid date.'
 						onInput={inputHandler}
-						initialValue={formState.inputs.fromDate.value}
+						initialValue={props.currentTemplate.defaultQuery.fromDate}
 						initialValid={true}
 						min={props.currentTemplate.min}
 						max={props.currentTemplate.max}
@@ -195,7 +195,7 @@ const ChartWrapper = props => {
 						errorText='Please select or enter a valid date.'
 						onInput={inputHandler}
 						initialValid={true}
-						initialValue={formState.inputs.toDate.value}
+						initialValue={props.currentTemplate.defaultQuery.toDate}
 						min={props.currentTemplate.min}
 						max={props.currentTemplate.max}
 					/>
