@@ -116,7 +116,10 @@ const ToggleSwitch = styled.label`
 	margin: 0 10px 0px;
 	
 	> input:hover + span {
-			background-color: ${setColor.toggleHover};
+			/* background-color: ${setColor.toggleHover}; */
+			transform: translateX(-2px);
+			/* 	0 X direction, 10px Y direction 20px blur and color black at .2 opacity */
+			box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
 	}
 	> input:checked + span {
 			background-color: ${setColor.toggleSelectedBlue};
@@ -125,8 +128,6 @@ const ToggleSwitch = styled.label`
 		box-shadow: 0 0 1px ${setColor.toggleSelectedBlue};
 	}
 	> input:checked + span:before {
-  	-webkit-transform: translateX(${px2Rem(BaseHeight * ToggleMultiplier)});
-  	-ms-transform: translateX(${px2Rem(BaseHeight * ToggleMultiplier)});
   	transform: translateX(${px2Rem(BaseHeight * ToggleMultiplier)});
 }
 `;
@@ -145,7 +146,6 @@ const ToggleSlider = styled.span`
   right: 0;
   bottom: 0;
   background-color: ${setColor.toggleBkgnd};
-  -webkit-transition: .4s;
   transition: .4s;
 	border-radius: ${px2Rem(BaseHeight)};
 	margin-bottom: 6px;  // change this to center vertically
@@ -158,8 +158,7 @@ const ToggleSlider = styled.span`
 		left: 2px;			// very well. also need to mess with left
 		bottom: 0px;
 		background-color: white;
-		-webkit-transition: .4s;
-		transition: .4s;
+		transition: .2s steps(1, jump-end);
 		border-radius: 50%;
 	}
 `;

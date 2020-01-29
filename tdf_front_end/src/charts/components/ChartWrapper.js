@@ -7,7 +7,6 @@ import { setRem } from '../../styles';
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
-import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/formHook';
 import { useHttpClient } from '../../shared/hooks/httpHook';
@@ -157,18 +156,11 @@ const ChartWrapper = props => {
 		} catch (err) {}
 	};
 
-	if (isLoading) {
-		return (
-			<div className='center'>
-				<LoadingSpinner />
-			</div>
-		);
-	}
-
 	return (
 		<React.Fragment>
 			<DivWrapper>
 				<LineChart
+					isLoading={isLoading}
 					id={props.currentTemplate.id}
 					title={props.currentTemplate.title}
 					data={data}
@@ -181,7 +173,6 @@ const ChartWrapper = props => {
 				/>
 				<ErrorModal error={error} onClear={clearError} />
 				<form onSubmit={chartsSubmitHandler}>
-					{isLoading && <LoadingSpinner asOverlay />}
 					<Input
 						className='form-input'
 						id='fromDate'

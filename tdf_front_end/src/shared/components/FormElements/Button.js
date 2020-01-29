@@ -33,10 +33,19 @@ const StyledButton = styled.button`
 		outline: none;
 	}
 
-	:hover,
-	:active {
+	:hover {
 		background: ${setColor.hoverNoticeMeRed};
+		transform: translateY(-2px);
+		/* 	0 X direction, 10px Y direction 20px blur and color black at .2 opacity */
+		box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
+	}
+
+	:active {
 		border-color: ${setColor.hoverNoticeMeRed};
+		transform: translateY(-1px);
+		/*	when we click on it we decreased the shadow and made it less blurry 
+			This gives the impression that the button was actually pushed down */
+		box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
 	}
 
 	:disabled,

@@ -36,3 +36,6 @@
 *~
 *.swp
 *.swo
+
+# development reactConfig file
+reactConfig.js.dev

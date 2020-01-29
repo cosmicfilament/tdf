@@ -3,6 +3,7 @@ import Chart from 'chart.js';
 import styled from 'styled-components';
 import { rem2Px, setFont, setColor } from '../../styles';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 
 Chart.defaults.global.defaultFontFamily = setFont.main;
 Chart.defaults.global.legend.display = true;
@@ -118,6 +119,7 @@ const LineChart = props => {
 
 	return (
 		<DivWrapper fontSize={props.fontSize || '1em'}>
+			{props.isLoading && <LoadingSpinner asOverlay />}
 			<canvas id={props.id} ref={canvasRef} />
 		</DivWrapper>
 	);
@@ -125,6 +127,7 @@ const LineChart = props => {
 
 export default LineChart;
 const DivWrapper = styled.div`
+	position: relative;
 	width: 90vw;
 	height: 60vh;
 	background: #ffffe0;
