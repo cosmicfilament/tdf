@@ -38,4 +38,4 @@
 *.swo
 
 # development reactConfig file
-reactConfig.js.dev
+reactConfig.dev.js
