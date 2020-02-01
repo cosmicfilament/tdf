@@ -13,10 +13,11 @@ const LineChart = props => {
 	const canvasRef = useRef(null);
 	const lineChart = useRef(null);
 
+	const { data, title, data1Label, data2Label, xAxisTitle } = props;
+	const { dataLabels, data1, data2 = [] } = data;
+
 	useEffect(
 		() => {
-			const { dataLabels, data1, data2 = [] } = props.data;
-
 			if (lineChart.current !== null) {
 				lineChart.current.destroy();
 			}
@@ -29,7 +30,7 @@ const LineChart = props => {
 
 					datasets: [
 						{
-							label: props.data1Label,
+							label: data1Label,
 							data: data1,
 							fill: false,
 							borderColor: setColor.bkgndBlue,
@@ -41,7 +42,7 @@ const LineChart = props => {
 							}
 						},
 						{
-							label: props.data2Label,
+							label: data2Label,
 							data: data2,
 							fill: false,
 							borderColor: setColor.noticeMeRed,
@@ -58,7 +59,7 @@ const LineChart = props => {
 					title: {
 						display: true,
 						fontSize: rem2Px(2.5),
-						text: props.title
+						text: title
 					},
 					tooltips: {
 						mode: 'index',
@@ -90,7 +91,7 @@ const LineChart = props => {
 								},
 								scaleLabel: {
 									display: true,
-									labelString: props.xAxisTitle
+									labelString: xAxisTitle
 								}
 							}
 						],
@@ -107,14 +108,7 @@ const LineChart = props => {
 				}
 			});
 		},
-		[
-			props.id,
-			props.data,
-			props.xAxisTitle,
-			props.data1Label,
-			props.data2Label,
-			props.title
-		]
+		[ data1, data2, dataLabels, xAxisTitle, data1Label, data2Label, title ]
 	);
 
 	return (

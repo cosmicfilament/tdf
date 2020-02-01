@@ -1,7 +1,7 @@
 const reactConfig = {};
 
-reactConfig.DEPLOYED_TO = 'DEPLOYED_TO_PRODUCTION';
-//reactConfig.DEPLOYED_TO = 'DEPLOYED_TO_DEVELOPMENT';
+//reactConfig.DEPLOYED_TO = 'DEPLOYED_TO_PRODUCTION';
+reactConfig.DEPLOYED_TO = 'DEPLOYED_TO_DEVELOPMENT';
 reactConfig.BASE_URL_DEVELOPMENT = 'http://localhost:5000';
 reactConfig.BASE_URL_PRODUCTION = 'http://twitterdumpsterfire.com:80';
 

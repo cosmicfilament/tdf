@@ -1,9 +1,8 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer } from 'react';
 import { validate } from '../util/validators';
 
 const CHANGE = 0;
 const TOUCH = CHANGE + 1;
-const RESET = TOUCH + 1;
 
 const inputReducer = (state, action) => {
 	switch (action.type) {
@@ -19,46 +18,22 @@ const inputReducer = (state, action) => {
 				isTouched: true
 			};
 		}
-		case RESET: {
-			return {
-				value: action.value,
-				isTouched: action.isTouched,
-				isValid: action.isValid
-			};
-		}
 		default:
 			return state;
 	}
 };
 
 export const useInputHook = props => {
-	const isCheckbox = props.checkbox || false;
-
 	const [ inputState, dispatch ] = useReducer(inputReducer, {
 		value: props.initialValue || '',
 		isTouched: false,
-		isValid: props.initialValid || isCheckbox || false
+		isValid: props.initialValid || false
 	});
-
-	useEffect(
-		() => {
-			dispatch({
-				type: RESET,
-				value: props.initialValue,
-				isTouched: false,
-				isValid: true
-			});
-		},
-		[ props.initialValue ]
-	);
 
 	const changeHandler = event => {
 		dispatch({
 			type: CHANGE,
-			value:
-				event.target.type !== 'checkbox'
-					? event.target.value
-					: event.target.checked,
+			value: event.target.value,
 			validators: props.validators
 		});
 	};

@@ -1,17 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import ChartWrapper from '../components/ChartWrapper';
-import { daily, weekly } from '../components/chartTemplate';
-import { VALIDATOR_IGNORE } from '../../shared/util/validators';
-import Input from '../../shared/components/FormElements/Input';
 
 const Analysis = () => {
-	const [ chartTemplate, setChartTemplate ] = useState(daily);
-
-	const inputHandler = (id, value, isValid) => {
-		setChartTemplate(value === true ? weekly : daily);
-	};
-
 	return (
 		<React.Fragment>
 			<EsplainItToMe>
@@ -21,28 +12,9 @@ const Analysis = () => {
 					of tweets generated.
 				</h4>
 			</EsplainItToMe>
-			<ToggleWrapper>
-				<Input
-					id='toggle'
-					type='checkbox'
-					validators={[ VALIDATOR_IGNORE() ]}
-					labelPosition='right'
-					initialValid={true}
-					label={
-						chartTemplate.name === 'daily' ? (
-							'Switch to Weekly Sentiment'
-						) : (
-							'Switch to Daily Sentiment'
-						)
-					}
-					onInput={inputHandler}
-				/>
-			</ToggleWrapper>
+
 			<DivWrapper>
-				<ChartWrapper
-					currentTemplate={chartTemplate}
-					switchInputHandler={inputHandler}
-				/>
+				<ChartWrapper />
 			</DivWrapper>
 		</React.Fragment>
 	);
@@ -60,5 +32,3 @@ const EsplainItToMe = styled.div`
 	height: auto;
 	margin: 20px;
 `;
-
-const ToggleWrapper = styled.div`margin: 5px 0 5px;`;
