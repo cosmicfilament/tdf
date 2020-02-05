@@ -1,4 +1,4 @@
 {
-	"ignore": ["node_modules/", "rawData/", ".vscode/", "frontEnd/"],
-	"watch": [".env", "server.js", "util/", "routes/", "models/", "lib/"]
+	"ignore": [ "node_modules/", "rawData/", ".vscode/", "frontEnd/", ".env" ],
+	"watch": [ "server.js", "util/", "routes/", "models/", "lib/" ]
 }
