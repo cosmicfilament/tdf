@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { rem2Px, setFont, setColor } from '../../styles';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-
 Chart.defaults.global.defaultFontFamily = setFont.main;
 Chart.defaults.global.legend.display = true;
 Chart.defaults.global.elements.line.tension = 0.1;
@@ -121,8 +120,6 @@ const LineChart = props => {
 
 export default LineChart;
 const DivWrapper = styled.div`
-	position: relative;
-	width: 90vw;
 	height: 60vh;
 	background: #ffffe0;
 	padding: 30px 20px 10px 20px;

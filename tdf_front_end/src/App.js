@@ -11,8 +11,8 @@ function App () {
 	return (
 		<React.Fragment>
 			<Seo />
-			<GlobalStyles />
 			<StyledApp>
+				<GlobalStyles />
 				<BannerController />
 				<Analysis />
 			</StyledApp>

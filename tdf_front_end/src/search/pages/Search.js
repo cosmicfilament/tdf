@@ -4,6 +4,7 @@ import 'whatwg-fetch';
 import SortButton from '../../shared/components/FormElements/SortButton';
 import DisplayResults from '../components/DisplayResults.js';
 import { SearchInput, DateInput, CheckBox } from '../components/SearchInputs';
+import GlobalStyles from '../../shared/styles/GlobalStyles';
 
 // same as in app.scss
 const DEFAULT_WINDOW_SIZE = 500;
@@ -117,9 +118,7 @@ const Search = () => {
 
 	const handleSortButtonClick = event => {
 		event.preventDefault();
-		setSortDirection(
-			sortDirection === 'ascending' ? 'descending' : 'ascending'
-		);
+		setSortDirection(sortDirection === 'ascending' ? 'descending' : 'ascending');
 	};
 
 	if (initializing) {

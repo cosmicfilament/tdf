@@ -7,9 +7,8 @@ const Analysis = () => {
 		<React.Fragment>
 			<EsplainItToMe>
 				<h4>
-					This site is an attempt to guage Donald Trump's state of mind by
-					measuring the sentiment of his tweets and comparing that to the level
-					of tweets generated.
+					This site is an attempt to guage Donald Trump's state of mind by measuring the sentiment
+					of his tweets and comparing that to the level of tweets generated.
 				</h4>
 			</EsplainItToMe>
 

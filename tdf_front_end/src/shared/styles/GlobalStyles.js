@@ -11,7 +11,6 @@ const GlobalStyles = createGlobalStyle`
   box-sizing:border-box;
 }
 html, body{
-  font-size:100%;
   color:${setColor.mainBlack};
   font-family: ${setFont.main};
   min-width: ${minScreenWidth}px;

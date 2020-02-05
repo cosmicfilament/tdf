@@ -32,15 +32,11 @@ const ChartWrapper = () => {
 	const [ formState, inputHandler, setFormData ] = useForm(
 		{
 			fromDate: {
-				value:
-					query.current === 'weekly'
-						? query.weekly.fromDate
-						: query.daily.fromDate,
+				value: query.current === 'weekly' ? query.weekly.fromDate : query.daily.fromDate,
 				isValid: true
 			},
 			toDate: {
-				value:
-					query.current === 'weekly' ? query.weekly.toDate : query.daily.toDate,
+				value: query.current === 'weekly' ? query.weekly.toDate : query.daily.toDate,
 				isValid: true
 			}
 		},
@@ -49,12 +45,9 @@ const ChartWrapper = () => {
 	// function that uses a stats package to get the stats on the data
 	const { processStats, sentimentStats, tweetcountStats } = Stats();
 	// helpers
-	const currentTemplate =
-		query.current === 'daily' ? defaultDaily : defaultWeekly;
-	const queryFromDate =
-		query.current === 'weekly' ? query.weekly.fromDate : query.daily.fromDate;
-	const queryToDate =
-		query.current === 'weekly' ? query.weekly.toDate : query.daily.toDate;
+	const currentTemplate = query.current === 'daily' ? defaultDaily : defaultWeekly;
+	const queryFromDate = query.current === 'weekly' ? query.weekly.fromDate : query.daily.fromDate;
+	const queryToDate = query.current === 'weekly' ? query.weekly.toDate : query.daily.toDate;
 
 	useEffect(
 		() => {
@@ -120,14 +113,7 @@ const ChartWrapper = () => {
 			}
 			init();
 		},
-		[
-			setFormData,
-			sendRequest,
-			processStats,
-			queryFromDate,
-			queryToDate,
-			currentTemplate.path
-		]
+		[ setFormData, sendRequest, processStats, queryFromDate, queryToDate, currentTemplate.path ]
 	);
 
 	const chartsSubmitHandler = async event => {
@@ -175,10 +161,10 @@ const ChartWrapper = () => {
 					data={data}
 					data1Label={currentTemplate.sentimentsLabel}
 					data2Label={currentTemplate.tweetsLabel}
-					xAxisTitle={`From ${format(
-						new Date(queryFromDate),
+					xAxisTitle={`From ${format(new Date(queryFromDate), 'MM-yyyy')} to ${format(
+						new Date(queryToDate),
 						'MM-yyyy'
-					)} to ${format(new Date(queryToDate), 'MM-yyyy')}`}
+					)}`}
 				/>
 				<ErrorModal error={error} onClear={clearError} />
 				<form onSubmit={chartsSubmitHandler}>
@@ -242,8 +228,7 @@ const Enchilada = styled.div`
 	}
 `;
 const Queso = styled.p`
-	color: ${props =>
-		props.color === 'red' ? setColor.noticeMeRed : setColor.bkgndBlue};
+	color: ${props => (props.color === 'red' ? setColor.noticeMeRed : setColor.bkgndBlue)};
 	font-size: ${setRem(16)};
 	font-weight: bold;
 	margin: 0;
