@@ -1,41 +1,31 @@
 import React from 'react';
-import {
-	BrowserRouter as Router,
-	Route,
-	Redirect,
-	Switch
-} from 'react-router-dom';
 import Seo from './shared/util/seo';
+import styled from 'styled-components';
+
+import dump from './images/dumpsterfire.jpg';
 import GlobalStyles from './shared/styles/GlobalStyles';
 import Analysis from './charts/pages/Analysis';
-import Search from './search/pages/Search';
-import Nav from './nav/Nav';
+import BannerController from './banner/BannerController';
 
 function App () {
-	let routes;
-
-	routes = (
-		<Switch>
-			<Route path='/' exact>
-				<Analysis />
-			</Route>
-			<Route path='/search' exact>
-				<Search />
-			</Route>
-			<Redirect to='/' />
-		</Switch>
-	);
-
 	return (
 		<React.Fragment>
 			<Seo />
-			<Router>
-				<Nav />
-				<GlobalStyles />
-				<main>{routes}</main>
-			</Router>
+			<GlobalStyles />
+			<StyledApp>
+				<BannerController />
+				<Analysis />
+			</StyledApp>
 		</React.Fragment>
 	);
 }
 
 export default App;
+
+const StyledApp = styled.div`
+	background-image: linear-gradient(rgba(255, 255, 225, 0.9), rgba(255, 255, 225, 0.9)),
+		url(${dump});
+	background-size: cover;
+	height: 100vh;
+	width: auto;
+`;

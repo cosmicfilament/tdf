@@ -25,7 +25,8 @@ export const setColor = {
 export const setFont = {
 	main: "'Arvo', serif",
 	second: "'Lato', sans-serif",
-	controls: "'Archivo', sans-serif"
+	controls: "'Archivo', sans-serif",
+	mono: "'Courier Prime', monospace"
 };
 
 export const setFlex = ({ x = 'center', y = 'center' } = {}) => {
@@ -39,11 +40,6 @@ export const setRem = (number = 16) => {
 export const rem2Px = (number = 1) => {
 	return Number(number * 16);
 };
-
-export const px2Rem = (number = 16) => {
-	return `${number / 16}rem`;
-};
-
 export const setLetterSpacing = (number = 2) => {
 	return `letter-spacing:${number}px`;
 };
@@ -55,6 +51,9 @@ export const screenWidth = {
 	phablet: 480,
 	phone: 320
 };
+
+export const maxScreenWidth = 2000;
+export const minScreenWidth = 300;
 
 // Iterate through the sizes and create a media template
 export const media = Object.keys(screenWidth).reduce((acc, label) => {

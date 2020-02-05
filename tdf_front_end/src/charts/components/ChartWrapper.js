@@ -1,25 +1,26 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import styled from 'styled-components';
-import { min, max, mean, median, standardDeviation } from 'simple-statistics';
 
-import { setRem } from '../../styles';
+import { setRem, setColor } from '../../styles';
 import Input from '../../shared/components/FormElements/Input';
-import Switch from '../../shared/components/FormElements/Switch';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/formHook';
 import { useHttpClient } from '../../shared/hooks/httpHook';
 import usePersistentChart from '../components/persistentChartState';
+import ToggleSwitch from '../components/ToggleSwitch';
+import Stats from '../components/processStats';
+
 import LineChart from './LineChart';
 
 const ChartWrapper = () => {
 	// encapsulates the fetch request
 	const { isLoading, error, sendRequest, clearError } = useHttpClient();
-	// data returned by the fetch to the server
+	// result data that is returned by the fetch
 	const [ data, setData ] = useState([]);
-	// chart state
+	// chart state management hook
 	const {
 		setCurrentQuery,
 		setCurrentQueryName,
@@ -45,92 +46,9 @@ const ChartWrapper = () => {
 		},
 		true
 	);
-	// callback from the switch toggle
-	const switchHandler = useCallback(
-		(id, state) => {
-			console.log(`switchHandler: id:${id} ${state}`);
-			setCurrentQueryName(state === true ? 'weekly' : 'daily');
-		},
-		[ setCurrentQueryName ]
-	);
-
-	const [ sentimentStats, setSentimentStats ] = useState({
-		_countS: 0,
-		_minS: 0,
-		_maxS: 0,
-		_meanS: 0,
-		_medianS: 0,
-		_stdDevS: 0
-	});
-
-	const [ tweetcountStats, setTweetCountStats ] = useState({
-		_minT: 0,
-		_maxT: 0,
-		_meanT: 0,
-		_medianT: 0,
-		_stdDevT: 0
-	});
-
-	const processStats = useCallback(
-		data => {
-			const _countS = data.length;
-			const _minS = min(data.map(item => item.score));
-			const _maxS = max(data.map(item => item.score));
-			const _meanS = mean(data.map(item => item.score));
-			const _medianS = median(data.map(item => item.score));
-			const _stdDevS = standardDeviation(data.map(item => item.score));
-
-			const _minT = min(data.map(item => item.tweetsCount));
-			const _maxT = max(data.map(item => item.tweetsCount));
-			const _meanT = mean(data.map(item => item.tweetsCount));
-			const _medianT = median(data.map(item => item.tweetsCount));
-			const _stdDevT = standardDeviation(data.map(item => item.tweetsCount));
-
-			setSentimentStats({
-				_countS,
-				_minS,
-				_maxS,
-				_meanS,
-				_medianS,
-				_stdDevS
-			});
-
-			setTweetCountStats({
-				_minT,
-				_maxT,
-				_meanT,
-				_medianT,
-				_stdDevT
-			});
-		},
-		[ setSentimentStats, setTweetCountStats ]
-	);
-
-	const processResponse = useCallback(
-		(responseData, params) => {
-			let dataLabels = [],
-				data1 = [],
-				data2 = [];
-
-			const data = responseData.sentiments;
-			processStats(data);
-
-			data.forEach(sentiment => {
-				dataLabels.push(format(new Date(sentiment.end_date), 'MM-dd-yy'));
-				data1.push(parseInt(sentiment.score));
-				data2.push(parseInt(sentiment.tweetsCount));
-			});
-			if (dataLabels.length === 1) {
-				dataLabels.push('empty');
-				data1.push(0);
-				data2.push(0);
-			}
-			params && setCurrentQuery(params.fromDate, params.toDate);
-			setData({ dataLabels, data1, data2 });
-		},
-		[ setCurrentQuery, setData, processStats ]
-	);
-
+	// function that uses a stats package to get the stats on the data
+	const { processStats, sentimentStats, tweetcountStats } = Stats();
+	// helpers
 	const currentTemplate =
 		query.current === 'daily' ? defaultDaily : defaultWeekly;
 	const queryFromDate =
@@ -154,7 +72,8 @@ const ChartWrapper = () => {
 					},
 					true
 				);
-
+				/* programatically updating an input kicked my ass
+						until I found this snippet online, of course */
 				const fromDateInput = document.getElementById('fromDate');
 				const nativeInputValueSetterFrom = Object.getOwnPropertyDescriptor(
 					window.HTMLInputElement.prototype,
@@ -163,7 +82,6 @@ const ChartWrapper = () => {
 				nativeInputValueSetterFrom.call(fromDateInput, queryFromDate);
 				const inputEventFrom = new Event('input', { bubbles: true });
 				fromDateInput.dispatchEvent(inputEventFrom);
-
 				const toDateInput = document.getElementById('toDate');
 				const nativeInputValueSetterTo = Object.getOwnPropertyDescriptor(
 					window.HTMLInputElement.prototype,
@@ -172,6 +90,7 @@ const ChartWrapper = () => {
 				nativeInputValueSetterTo.call(toDateInput, queryToDate);
 				const inputEventTo = new Event('input', { bubbles: true });
 				toDateInput.dispatchEvent(inputEventTo);
+				/* end of ass kicking */
 
 				try {
 					const params = {
@@ -220,27 +139,35 @@ const ChartWrapper = () => {
 
 		try {
 			const responseData = await sendRequest(currentTemplate.path, params);
-			processResponse(responseData, params);
-		} catch (err) {}
+
+			let dataLabels = [],
+				data1 = [],
+				data2 = [];
+
+			const data = responseData.sentiments;
+			processStats(data);
+
+			data.forEach(sentiment => {
+				dataLabels.push(format(new Date(sentiment.end_date), 'MM-dd-yy'));
+				data1.push(parseInt(sentiment.score));
+				data2.push(parseInt(sentiment.tweetsCount));
+			});
+			if (dataLabels.length === 1) {
+				dataLabels.push('empty');
+				data1.push(0);
+				data2.push(0);
+			}
+			params && setCurrentQuery(params.fromDate, params.toDate);
+			setData({ dataLabels, data1, data2 });
+		} catch (error) {
+			console.log(`error in chartsSubmitHandler: ${error}`);
+		}
 	};
 
 	return (
 		<React.Fragment>
-			<ToggleWrapper>
-				<Switch
-					id='toggle'
-					labelPosition='right'
-					label={
-						query.current === 'daily' ? (
-							'Switch to Weekly Sentiment'
-						) : (
-							'Switch to Daily Sentiment'
-						)
-					}
-					onSwitch={switchHandler}
-				/>
-			</ToggleWrapper>
-			<DivWrapper>
+			<ToggleSwitch setName={setCurrentQueryName} current={query.current} />
+			<Enchilada>
 				<LineChart
 					isLoading={isLoading}
 					id={currentTemplate.id}
@@ -285,40 +212,39 @@ const ChartWrapper = () => {
 						Display Chart
 					</Button>
 				</form>
-				<StatWrapper>
+				<Queso color='blue'>
 					{`Sentiment Stats: min: ${sentimentStats._minS}, 
 						max: ${sentimentStats._maxS}, 
 						mean: ${sentimentStats._meanS.toFixed(2)},
 						median: ${sentimentStats._medianS.toFixed(2)},
 						standard deviation: ${sentimentStats._stdDevS.toFixed(2)}`}
-				</StatWrapper>
-				<StatWrapper>
-					{`TweetCount Stats: min: ${tweetcountStats._minT}, 
+				</Queso>
+				<Queso color='red'>
+					{`Tweet Count Stats: min: ${tweetcountStats._minT}, 
 						max: ${tweetcountStats._maxT}, 
 						mean: ${tweetcountStats._meanT.toFixed(2)},
 						median: ${tweetcountStats._medianT.toFixed(2)},
 					standard deviation: ${tweetcountStats._stdDevT.toFixed(2)}`}
-				</StatWrapper>
-				<StatWrapper>
-					{`Number of records: ${sentimentStats._countS}`}
-				</StatWrapper>
-			</DivWrapper>
+				</Queso>
+				<Queso>{`Number of records: ${sentimentStats._countS}`}</Queso>
+			</Enchilada>
 		</React.Fragment>
 	);
 };
 
 export default ChartWrapper;
 
-const DivWrapper = styled.div`
+const Enchilada = styled.div`
 	margin: 20px;
 	form {
 		display: flex;
 		margin-top: 20px;
 	}
 `;
-const StatWrapper = styled.p`
+const Queso = styled.p`
+	color: ${props =>
+		props.color === 'red' ? setColor.noticeMeRed : setColor.bkgndBlue};
 	font-size: ${setRem(16)};
+	font-weight: bold;
 	margin: 0;
 `;
-
-const ToggleWrapper = styled.div`margin: 5px 0 5px;`;

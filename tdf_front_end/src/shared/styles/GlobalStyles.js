@@ -1,19 +1,21 @@
 import { createGlobalStyle } from 'styled-components';
-import { setColor, setFont } from '../../styles';
+import { setColor, setFont, maxScreenWidth, minScreenWidth } from '../../styles';
 const GlobalStyles = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css?family=Archivo&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Arvo|Lato:400,700&display=swap');
-   
+@import url('https://fonts.googleapis.com/css?family=Courier+Prime:400,700&display=swap');
+
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
 }
-body{
+html, body{
   font-size:100%;
   color:${setColor.mainBlack};
-  background:${setColor.mainWhite};
   font-family: ${setFont.main};
+  min-width: ${minScreenWidth}px;
+  max-width: ${maxScreenWidth}px;
 }
 h1{
   font-size:3em;line-height:1.2;margin-bottom:0.5em

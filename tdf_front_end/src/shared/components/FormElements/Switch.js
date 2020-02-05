@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { setColor, px2Rem, setFont } from '../../../styles';
+import { setColor, setRem, setFont } from '../../../styles';
 
 const Switch = props => {
 	const [ state, setState ] = useState(false);
@@ -62,8 +62,8 @@ const BaseHeight = BaseWidth * ToggleMultiplier;
 const ToggleSwitch = styled.label`
 	position: relative;
   display: inline-block;
-  width: ${px2Rem(BaseWidth)};
-  height: ${px2Rem(BaseHeight)};
+  width: ${setRem(BaseWidth)};
+  height: ${setRem(BaseHeight)};
 	margin: 0 10px 0px;
 	
 	> input:hover + span {
@@ -79,7 +79,7 @@ const ToggleSwitch = styled.label`
 		box-shadow: 0 0 1px ${setColor.toggleSelectedBlue};
 	}
 	> input:checked + span:before {
-  	transform: translateX(${px2Rem(BaseHeight * ToggleMultiplier)});
+  	transform: translateX(${setRem(BaseHeight * ToggleMultiplier)});
 }
 `;
 
@@ -98,14 +98,14 @@ const ToggleSlider = styled.span`
 	bottom: 0;
 	background-color: ${setColor.toggleBkgnd};
 	transition: .4s;
-	border-radius: ${px2Rem(BaseHeight)};
+	border-radius: ${setRem(BaseHeight)};
 	margin-bottom: 6px; // change this to center vertically
 
 	:before {
 		position: absolute;
 		content: "";
-		height: ${px2Rem(BaseHeight * 0.8125)}; // can't figure out how
-		width: ${px2Rem(BaseHeight * 0.8125)}; // to scale this number
+		height: ${setRem(BaseHeight * 0.8125)}; // can't figure out how
+		width: ${setRem(BaseHeight * 0.8125)}; // to scale this number
 		left: 2px; // very well. also need to mess with left
 		bottom: 0px;
 		background-color: white;
