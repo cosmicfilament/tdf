@@ -29,12 +29,9 @@ const Analysis = () => {
 export default Analysis;
 
 const DivWrapper = styled.div`
-	width: 90vw;
+	position: relative;
+	width: 100%;
 	height: auto;
 `;
 
-const EsplainItToMe = styled.div`
-	width: 90vw;
-	height: auto;
-	margin: 2rem;
-`;
+const EsplainItToMe = styled.div`margin: 2rem;`;

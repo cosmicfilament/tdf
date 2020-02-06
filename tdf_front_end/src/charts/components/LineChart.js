@@ -121,7 +121,6 @@ const LineChart = props => {
 export default LineChart;
 const DivWrapper = styled.div`
 	height: 60vh;
-	width: 95vw;
 	background: #ffffe0;
 	padding: 30px 20px 10px 20px;
 	border-radius: 10px;
