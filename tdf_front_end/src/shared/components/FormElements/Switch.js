@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { setColor, setRem, setFont } from '../../../styles';
+import { setColor, setFont } from '../../../styles';
 
 const Switch = props => {
 	const [ state, setState ] = useState(false);
@@ -46,25 +46,26 @@ export default Switch;
 
 const StyledToggleWrapper = styled.div`
 	display: inline-block;
-	font-size: ${props => props.fontSize};
+	font-size: ${props => props.fontSize * 2};
 	font-family: ${setFont.controls};
 `;
 
 const StyledToggleLabel = styled.label`
 	font-weight: bold;
-	font-size: 1.25em;
+	font-size: 2em;
+	vertical-align: bottom;
 `;
 
-const BaseWidth = 48;
+const BaseWidth = 5;
 const ToggleMultiplier = 0.625;
 const BaseHeight = BaseWidth * ToggleMultiplier;
 
 const ToggleSwitch = styled.label`
 	position: relative;
   display: inline-block;
-  width: ${setRem(BaseWidth)};
-  height: ${setRem(BaseHeight)};
-	margin: 0 10px 0px;
+  width: ${BaseWidth}rem;
+	height: ${BaseHeight}rem;
+	margin: 0 1rem 0;
 	
 	> input:hover + span {
 			/* background-color: ${setColor.toggleHover}; */
@@ -79,7 +80,7 @@ const ToggleSwitch = styled.label`
 		box-shadow: 0 0 1px ${setColor.toggleSelectedBlue};
 	}
 	> input:checked + span:before {
-  	transform: translateX(${setRem(BaseHeight * ToggleMultiplier)});
+  	transform: translateX(${BaseHeight * ToggleMultiplier}rem);
 }
 `;
 
@@ -98,16 +99,16 @@ const ToggleSlider = styled.span`
 	bottom: 0;
 	background-color: ${setColor.toggleBkgnd};
 	transition: .4s;
-	border-radius: ${setRem(BaseHeight)};
-	margin-bottom: 6px; // change this to center vertically
+	border-radius: ${BaseHeight}rem;
+	margin-bottom: .6rem; // change this to center vertically
 
 	:before {
 		position: absolute;
 		content: "";
-		height: ${setRem(BaseHeight * 0.8125)}; // can't figure out how
-		width: ${setRem(BaseHeight * 0.8125)}; // to scale this number
+		height: ${BaseHeight * 0.8125}rem; // can't figure out how
+		width: ${BaseHeight * 0.8125}rem; // to scale this number
 		left: 2px; // very well. also need to mess with left
-		bottom: 0px;
+		bottom: 0;
 		background-color: white;
 		transition: .2s steps(1, jump-end);
 		border-radius: 50%;

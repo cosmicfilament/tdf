@@ -23,7 +23,7 @@ const Input = props => {
 	return (
 		<StyledInputWrapper
 			className={isInvalid && 'form-control--invalid'}
-			fontSize={props.fontSize || '1em'}
+			fontSize={props.fontSize || '1.75rem'}
 		>
 			<StyledLabel htmlFor={props.id}>{props.label}</StyledLabel>
 			{props.type === 'date' ? (
@@ -74,8 +74,8 @@ const StyledInputWrapper = styled.div`
 `;
 
 const StyledInput = styled.input`
-	margin-right: 10px;
-	border: 2px solid ${setColor.inputBorder};
+	margin-right: 1rem;
+	border: .3rem solid ${setColor.inputBorder};
 	background: ${setColor.inputBkgnd};
 	font-size: 1em;
 	:hover {

@@ -22,7 +22,7 @@ const StyledButton = styled.button`
 	font-size: ${props => props.fontSize};
 	padding: 0.25rem;
 	border: 1px solid ${setColor.noticeMeRed};
-	border-radius: 4px;
+	border-radius: .5rem;
 	background: ${setColor.noticeMeRed};
 	color: ${setColor.mainWhite};
 	cursor: pointer;
@@ -37,7 +37,7 @@ const StyledButton = styled.button`
 		background: ${setColor.hoverNoticeMeRed};
 		transform: translateY(-2px);
 		/* 	0 X direction, 10px Y direction 20px blur and color black at .2 opacity */
-		box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
+		box-shadow: 0 .4rem .8rem rgba(0, 0, 0, .2);
 	}
 
 	:active {
@@ -45,7 +45,7 @@ const StyledButton = styled.button`
 		transform: translateY(-1px);
 		/*	when we click on it we decreased the shadow and made it less blurry 
 			This gives the impression that the button was actually pushed down */
-		box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+		box-shadow: 0 .2rem .4rem rgba(0, 0, 0, .2);
 	}
 
 	:disabled,

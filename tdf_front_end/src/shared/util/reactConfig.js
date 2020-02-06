@@ -1,12 +1,10 @@
 const reactConfig = {};
 
-reactConfig.DEPLOYED_TO = 'DEPLOYED_TO_PRODUCTION';
-//reactConfig.DEPLOYED_TO = 'DEPLOYED_TO_DEVELOPMENT';
 reactConfig.BASE_URL_DEVELOPMENT = 'http://localhost:5000';
 reactConfig.BASE_URL_PRODUCTION = 'http://twitterdumpsterfire.com:80';
 
 reactConfig.BASE_URL =
-	reactConfig.DEPLOYED_TO === 'DEPLOYED_TO_DEVELOPMENT'
+	process.env.NODE_ENV === 'development'
 		? reactConfig.BASE_URL_DEVELOPMENT
 		: reactConfig.BASE_URL_PRODUCTION;
 

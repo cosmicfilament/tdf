@@ -1,14 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { setFont, setColor, setRem } from '../styles';
+import { setFont, setColor } from '../styles';
 
 const LetterItem = ({ letter, index, _screenWidth, screenWidth }) => {
-	console.log(`LetterItem _screenWidth: ${_screenWidth}`);
-
 	// starts the animation at the mouth of the tweeter in chief. So uses Banner scalefunction
 	// plus some offset values
-	const xScaleFactor = 10 * (_screenWidth > screenWidth.tablet ? _screenWidth * 0.01 : 1.5) + 65;
+	const xScaleFactor = 10 * (_screenWidth > screenWidth.tablet ? _screenWidth * 0.01 : 1.5) + 72;
 
 	let _sizes = {};
 
@@ -16,42 +14,42 @@ const LetterItem = ({ letter, index, _screenWidth, screenWidth }) => {
 		case _screenWidth > screenWidth.large:
 			// 1200 to ...
 			_sizes = {
-				fontScale: 3.0,
+				fontScale: 6.0,
 				xScaleFactor: xScaleFactor,
 				xOffSet: -30,
-				end: 3.85
+				end: 3.5
 			};
 			break;
 		case _screenWidth > screenWidth.desktop && _screenWidth <= screenWidth.large: // 1024 to 1200
 			_sizes = {
-				fontScale: 3.0,
+				fontScale: 5.0,
 				xScaleFactor: xScaleFactor,
 				xOffSet: -30,
-				end: 3.85
+				end: 3.5
 			};
 			break;
 		case _screenWidth > screenWidth.tablet && _screenWidth <= screenWidth.desktop: // 768 to 1024
 			_sizes = {
-				fontScale: 2.75,
+				fontScale: 4,
 				xScaleFactor: xScaleFactor,
-				xOffSet: -25,
-				end: 3.65
+				xOffSet: -22,
+				end: 3.0
 			};
 			break;
 		case _screenWidth > screenWidth.phablet && _screenWidth <= screenWidth.tablet: // 480 to 768
 			_sizes = {
-				fontScale: 1.5,
+				fontScale: 3.25,
 				xScaleFactor: xScaleFactor,
-				xOffSet: -15,
-				end: 4
+				xOffSet: -18,
+				end: 4.2
 			};
 			break;
 		case _screenWidth > screenWidth.phone && _screenWidth <= screenWidth.phablet: // 320 to 480
 			_sizes = {
-				fontScale: 1.25,
+				fontScale: 2.25,
 				xScaleFactor: xScaleFactor,
-				xOffSet: -11,
-				end: 3.0
+				xOffSet: -12,
+				end: 2.8
 			};
 			break;
 		default:
@@ -93,13 +91,13 @@ const LetterItem = ({ letter, index, _screenWidth, screenWidth }) => {
 			opacity: 1,
 			scale: _sizes.fontScale,
 			x: _sizes.xScaleFactor * _sizes.end + _sizes.xOffSet * index,
-			y: 20
+			y: 25
 		}
 	};
 
 	return (
 		<StyledLI
-			style={{ position: 'absolute', top: '20px', left: `${xScaleFactor}px` }}
+			style={{ position: 'absolute', top: '2.5rem', left: `${xScaleFactor}px` }}
 			variants={variants}
 			transition={{ duration: 1.5, ease: 'easeInOut' }}
 		>
@@ -115,6 +113,6 @@ const StyledLI = styled(motion.li)`
 	font-family: ${setFont.mono};
 	font-weight: lighter;
 	list-style-type: none;
-	font-size: ${setRem(16)};
+	font-size: 1rem;
 	opacity: 0;
 `;

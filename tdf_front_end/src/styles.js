@@ -33,17 +33,6 @@ export const setFlex = ({ x = 'center', y = 'center' } = {}) => {
 	return `display:flex;align-items:${y};justify-content:${x}`;
 };
 
-export const setRem = (number = 16) => {
-	return `${number / 16}rem`;
-};
-
-export const rem2Px = (number = 1) => {
-	return Number(number * 16);
-};
-export const setLetterSpacing = (number = 2) => {
-	return `letter-spacing:${number}px`;
-};
-
 export const screenWidth = {
 	large: 1200,
 	desktop: 1024,
@@ -53,12 +42,12 @@ export const screenWidth = {
 };
 
 export const maxScreenWidth = 2000;
-export const minScreenWidth = 300;
+export const minScreenWidth = 320;
 
 // Iterate through the sizes and create a media template
 export const media = Object.keys(screenWidth).reduce((acc, label) => {
 	acc[label] = (...args) => css`
-		@media (min-width: ${screenWidth[label] / 16}em) {
+		@media (min-width: ${screenWidth[label] / 10}em) {
 			${css(...args)};
 		}
 	`;

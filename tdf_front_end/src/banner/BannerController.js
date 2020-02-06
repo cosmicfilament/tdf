@@ -4,7 +4,7 @@ import { useAnimation } from 'framer-motion';
 import Banner from './Banner';
 import Title from './TitleController';
 import styled from 'styled-components/macro';
-import { setColor, setRem, maxScreenWidth } from '../styles';
+import { setColor, maxScreenWidth } from '../styles';
 
 const BannerController = () => {
 	const [ _screenWidth, _setScreenWidth ] = useState(
@@ -24,7 +24,7 @@ const BannerController = () => {
 		setTimeout(
 			() =>
 				_setScreenWidth(window.innerWidth <= maxScreenWidth ? window.innerWidth : maxScreenWidth),
-			3000
+			1500
 		);
 	};
 
@@ -53,6 +53,6 @@ export default BannerController;
 
 const StyledHDR = styled.header`
 	position: relative;
-	height: ${setRem(96)};
+	height: 10rem;
 	background: ${setColor.bkgndBlue};
 `;

@@ -6,10 +6,17 @@ const Analysis = () => {
 	return (
 		<React.Fragment>
 			<EsplainItToMe>
-				<h4>
-					This site is an attempt to guage Donald Trump's state of mind by measuring the sentiment
+				<h1>
+					This site is an attempt to ascertain Donald Trump's state of mind by measuring the{' '}
+					<a
+						href='https://en.wikipedia.org/wiki/Sentiment_analysis'
+						rel='noopener noreferrer'
+						target='_blank'
+					>
+						sentiment
+					</a>{' '}
 					of his tweets and comparing that to the level of tweets generated.
-				</h4>
+				</h1>
 			</EsplainItToMe>
 
 			<DivWrapper>
@@ -23,11 +30,11 @@ export default Analysis;
 
 const DivWrapper = styled.div`
 	width: 90vw;
-	height: 60vh;
+	height: auto;
 `;
 
 const EsplainItToMe = styled.div`
 	width: 90vw;
 	height: auto;
-	margin: 20px;
+	margin: 2rem;
 `;

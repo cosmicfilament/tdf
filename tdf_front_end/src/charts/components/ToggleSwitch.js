@@ -6,7 +6,6 @@ const ToggleSwitch = props => {
 	// callback from the switch toggle
 	const switchHandler = useCallback(
 		(id, state) => {
-			console.log(`switchHandler: id:${id} ${state}`);
 			props.setName(state === true ? 'weekly' : 'daily');
 		},
 		[ props ]
@@ -18,11 +17,7 @@ const ToggleSwitch = props => {
 				id='toggle'
 				labelPosition='right'
 				label={
-					props.current === 'daily' ? (
-						'Switch to Weekly Sentiment'
-					) : (
-						'Switch to Daily Sentiment'
-					)
+					props.current === 'daily' ? 'Switch to Weekly Sentiment' : 'Switch to Daily Sentiment'
 				}
 				onSwitch={switchHandler}
 			/>

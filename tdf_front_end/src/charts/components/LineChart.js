@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js';
 import styled from 'styled-components';
-import { rem2Px, setFont, setColor } from '../../styles';
+import { setFont, setColor } from '../../styles';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 Chart.defaults.global.defaultFontFamily = setFont.main;
@@ -57,7 +57,7 @@ const LineChart = props => {
 				options: {
 					title: {
 						display: true,
-						fontSize: rem2Px(2.5),
+						fontSize: 30,
 						text: title
 					},
 					tooltips: {
@@ -111,7 +111,7 @@ const LineChart = props => {
 	);
 
 	return (
-		<DivWrapper fontSize={props.fontSize || '1em'}>
+		<DivWrapper fontSize={props.fontSize || '1rem'}>
 			{props.isLoading && <LoadingSpinner asOverlay />}
 			<canvas id={props.id} ref={canvasRef} />
 		</DivWrapper>
@@ -121,6 +121,7 @@ const LineChart = props => {
 export default LineChart;
 const DivWrapper = styled.div`
 	height: 60vh;
+	width: 95vw;
 	background: #ffffe0;
 	padding: 30px 20px 10px 20px;
 	border-radius: 10px;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 
-import { setRem, setColor } from '../../styles';
+import { setColor } from '../../styles';
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
@@ -221,15 +221,15 @@ const ChartWrapper = () => {
 export default ChartWrapper;
 
 const Enchilada = styled.div`
-	margin: 20px;
+	margin: 2rem;
 	form {
 		display: flex;
-		margin-top: 20px;
+		margin: 1.5rem;
 	}
 `;
 const Queso = styled.p`
 	color: ${props => (props.color === 'red' ? setColor.noticeMeRed : setColor.bkgndBlue)};
-	font-size: ${setRem(16)};
+	font-size: 2rem;
 	font-weight: bold;
 	margin: 0;
 `;
