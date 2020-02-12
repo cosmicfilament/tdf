@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useAnimation } from 'framer-motion';
 
-import Banner from './Banner';
-import Title from './TitleController';
+import Banner from '../components/Banner';
+import Title from '../components/TitleController';
 import styled from 'styled-components/macro';
-import { setColor, maxScreenWidth } from '../styles';
+import { setColor, maxScreenWidth } from '../../styles';
 
 const BannerController = () => {
 	const [ _screenWidth, _setScreenWidth ] = useState(

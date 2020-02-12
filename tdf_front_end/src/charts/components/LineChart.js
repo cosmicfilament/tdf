@@ -35,7 +35,6 @@ const LineChart = props => {
 							borderColor: setColor.bkgndBlue,
 							borderWidth: 2,
 							pointRadius: 1,
-							backgroundColor: setColor.chartYellow,
 							datalabels: {
 								display: false
 							}
@@ -47,7 +46,6 @@ const LineChart = props => {
 							borderColor: setColor.noticeMeRed,
 							borderWidth: 2,
 							pointRadius: 1,
-							backgroundColor: setColor.chartYellow,
 							datalabels: {
 								display: false
 							}
@@ -110,10 +108,19 @@ const LineChart = props => {
 		[ data1, data2, dataLabels, xAxisTitle, data1Label, data2Label, title ]
 	);
 
+	const clickHandler = event => {
+		const tooltip = lineChart.current.tooltip;
+		const currentTooltip = tooltip._active;
+		const chart_0 = currentTooltip[0];
+		const index = chart_0._index;
+		const currentDateRange = tooltip._data.labels[index];
+		props.clickHandler(currentDateRange);
+	};
+
 	return (
 		<DivWrapper fontSize={props.fontSize || '1rem'}>
 			{props.isLoading && <LoadingSpinner asOverlay />}
-			<canvas id={props.id} ref={canvasRef} />
+			<canvas id={props.id} ref={canvasRef} onClick={clickHandler} />
 		</DivWrapper>
 	);
 };
@@ -121,13 +128,11 @@ const LineChart = props => {
 export default LineChart;
 const DivWrapper = styled.div`
 	height: 60vh;
-	background: #ffffe0;
-	padding: 30px 20px 10px 20px;
-	border-radius: 10px;
-	-webkit-box-shadow: 0px 10px 0px -5px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0px 10px 0px -5px rgba(0, 0, 0, 0.3);
-	box-shadow: 0px 10px 0px -5px rgba(0, 0, 0, 0.3);
+	background: ${setColor.tweetBlue};
+	padding: 0rem 1rem 1rem 0rem;
+	border-radius: 1rem;
+	box-shadow: 0 1rem 3rem -1rem ${setColor.bkgndBlue};
 	& canvas {
-		background-color: #ffffe0;
+		background-color: ${setColor.bkgndYellow};
 	}
 `;

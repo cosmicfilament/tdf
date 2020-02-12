@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useEffect, useLayoutEffect } from 'react';
 import 'whatwg-fetch';
 
-import SortButton from '../../shared/components/FormElements/SortButton';
-import DisplayResults from '../components/DisplayResults.js';
+import SortButton from '../../../src/shared/components/FormElements/SortButton';
+import DisplayTweetResults from '../../../src/charts/components/DisplayTweetResults.js';
 import { SearchInput, DateInput, CheckBox } from '../components/SearchInputs';
-import GlobalStyles from '../../shared/styles/GlobalStyles';
+import GlobalStyles from '../../../src/shared/styles/GlobalStyles';
 
 // same as in app.scss
 const DEFAULT_WINDOW_SIZE = 500;
@@ -69,7 +69,11 @@ const Search = () => {
 			`searchValue: ${searchValue} fromDate: ${fromDateValue} toDate: ${toDateValue} caseSensitive: ${caseSensitive} includeRetweets: ${includeRetweets}`
 		);
 
-		const url = `/search?search_terms=${searchValue}&case_sensitive=${caseSensitive}&include_retweets=${includeRetweets}&from_date=${fromDateValue}&to_date=${toDateValue}`;
+		const url = `/search?search_terms=${searchValue}
+		&case_sensitive=${caseSensitive}
+		&include_retweets=${includeRetweets}
+		&from_date=${fromDateValue}
+		&to_date=${toDateValue}`;
 
 		window
 			.fetch(url)
@@ -136,7 +140,7 @@ const Search = () => {
 						title='Search'
 						defaultValue={searchValue}
 						onChangeHandler={changeHandler}
-						width={'300px'}
+						width={'30rem'}
 					/>
 				</div>
 				<div className='from-date'>
@@ -146,7 +150,7 @@ const Search = () => {
 						label='From'
 						title='From Date'
 						min='2006-03-05'
-						max={today}
+						max={today()}
 						defaultValue={fromDateValue}
 						onChangeHandler={changeHandler}
 					/>
@@ -159,7 +163,7 @@ const Search = () => {
 						title='To Date'
 						min='2006-03-05'
 						defaultValue={toDateValue}
-						max={today}
+						max={today()}
 						onChangeHandler={changeHandler}
 					/>
 				</div>
@@ -198,7 +202,7 @@ const Search = () => {
 				</div>
 			</form>
 			{searchResults.length > 0 && (
-				<DisplayResults results={searchResults} sortDirection={sortDirection} />
+				<DisplayTweetResults results={searchResults} sortDirection={sortDirection} />
 			)}
 		</Fragment>
 	);

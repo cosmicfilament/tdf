@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { format } from 'date-fns';
 import styled from 'styled-components';
 
 import { setColor } from '../../styles';
@@ -9,49 +8,60 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/formHook';
 import { useHttpClient } from '../../shared/hooks/httpHook';
-import usePersistentChart from '../components/persistentChartState';
-import ToggleSwitch from '../components/ToggleSwitch';
-import Stats from '../components/processStats';
-
+import usePersistentChart from './persistentChartState';
+import ToggleSwitch from './ToggleSwitch';
+import Stats from './processChartStats';
+import { EtzToUtc, UtcToEtz, TWEETS_PATH, LOG_IT } from '../../shared/util/reactConfig';
 import LineChart from './LineChart';
+import DisplayTweetResults from './DisplayTweetResults';
 
-const ChartWrapper = () => {
+// all browser instance times will be in Eastern US time zone as that is trump's hangout
+// server data is all on UTC time
+
+const ChartController = () => {
 	// encapsulates the fetch request
 	const { isLoading, error, sendRequest, clearError } = useHttpClient();
-	// result data that is returned by the fetch
+	// result data that is returned by the fetch request
 	const [ data, setData ] = useState([]);
+	// search results when selecting point on chart
+	const [ searchResults, displaySearchResults ] = useState([]);
 	// chart state management hook
 	const {
 		setCurrentQuery,
+		getCurrentQuery,
 		setCurrentQueryName,
 		defaultDaily,
 		defaultWeekly,
 		query
 	} = usePersistentChart();
-	// hook that maintains the form state
+	// form state management hook
 	const [ formState, inputHandler, setFormData ] = useForm(
 		{
 			fromDate: {
-				value: query.current === 'weekly' ? query.weekly.fromDate : query.daily.fromDate,
+				value: getCurrentQuery().fromDate,
 				isValid: true
 			},
 			toDate: {
-				value: query.current === 'weekly' ? query.weekly.toDate : query.daily.toDate,
+				value: getCurrentQuery().toDate,
 				isValid: true
 			}
 		},
 		true
 	);
-	// function that uses a stats package to get the stats on the data
-	const { processStats, sentimentStats, tweetcountStats } = Stats();
+	// manages the statistics that are printed at the end of the chart
+	const { ProcessChartStats, sentimentStats, tweetcountStats } = Stats();
 	// helpers
 	const currentTemplate = query.current === 'daily' ? defaultDaily : defaultWeekly;
-	const queryFromDate = query.current === 'weekly' ? query.weekly.fromDate : query.daily.fromDate;
-	const queryToDate = query.current === 'weekly' ? query.weekly.toDate : query.daily.toDate;
+	const queryFromDate = getCurrentQuery().fromDate;
+	const queryToDate = getCurrentQuery().toDate;
 
 	useEffect(
 		() => {
 			async function init () {
+				LOG_IT && console.log(`useEffect`);
+
+				displaySearchResults('');
+
 				setFormData(
 					{
 						fromDate: {
@@ -86,20 +96,21 @@ const ChartWrapper = () => {
 				/* end of ass kicking */
 
 				try {
+					// server data is on UTC time so need to convert
 					const params = {
-						fromDate: queryFromDate,
-						toDate: queryToDate
+						fromDate: EtzToUtc(queryFromDate),
+						toDate: EtzToUtc(queryToDate, 23, 59, 59, 999)
 					};
 					const responseData = await sendRequest(currentTemplate.path, params);
 					const response = responseData.sentiments;
-					processStats(response);
+					ProcessChartStats(response);
 
 					let dataLabels = [],
 						data1 = [],
 						data2 = [];
-
+					// convert response to ETZ
 					response.forEach(sentiment => {
-						dataLabels.push(format(new Date(sentiment.end_date), 'MM-dd-yy'));
+						dataLabels.push(UtcToEtz(sentiment.end_date));
 						data1.push(parseInt(sentiment.score));
 						data2.push(parseInt(sentiment.tweetsCount));
 					});
@@ -113,14 +124,44 @@ const ChartWrapper = () => {
 			}
 			init();
 		},
-		[ setFormData, sendRequest, processStats, queryFromDate, queryToDate, currentTemplate.path ]
+		[
+			setFormData,
+			sendRequest,
+			ProcessChartStats,
+			queryFromDate,
+			queryToDate,
+			currentTemplate.path
+		]
 	);
+
+	const chartClickHandler = async date => {
+		let params = { fromDate: EtzToUtc(date), toDate: '' };
+
+		if (query.current === 'daily') {
+			params.toDate = EtzToUtc(date, 23, 59, 59, 999);
+		}
+		else {
+			let _toDate = new Date(date);
+			_toDate.setDate(_toDate.getDate() + 6);
+			params.toDate = EtzToUtc(_toDate, 23, 59, 59, 999);
+		}
+
+		try {
+			const responseData = await sendRequest(TWEETS_PATH(), params);
+
+			const tweets = responseData.tweets;
+			displaySearchResults(tweets);
+		} catch (error) {
+			console.log(`error in chartClickHandler: ${error}`);
+		}
+	};
 
 	const chartsSubmitHandler = async event => {
 		event.preventDefault();
+		// server data is on UTC time so need to convert
 		const params = {
-			fromDate: formState.inputs.fromDate.value,
-			toDate: formState.inputs.toDate.value
+			fromDate: EtzToUtc(formState.inputs.fromDate.value),
+			toDate: EtzToUtc(formState.inputs.toDate.value, 23, 59, 59, 999)
 		};
 
 		try {
@@ -131,10 +172,11 @@ const ChartWrapper = () => {
 				data2 = [];
 
 			const data = responseData.sentiments;
-			processStats(data);
+			ProcessChartStats(data);
 
+			// convert response to ETZ
 			data.forEach(sentiment => {
-				dataLabels.push(format(new Date(sentiment.end_date), 'MM-dd-yy'));
+				dataLabels.push(UtcToEtz(sentiment.end_date));
 				data1.push(parseInt(sentiment.score));
 				data2.push(parseInt(sentiment.tweetsCount));
 			});
@@ -143,7 +185,7 @@ const ChartWrapper = () => {
 				data1.push(0);
 				data2.push(0);
 			}
-			params && setCurrentQuery(params.fromDate, params.toDate);
+			params && setCurrentQuery(UtcToEtz(params.fromDate), UtcToEtz(params.toDate));
 			setData({ dataLabels, data1, data2 });
 		} catch (error) {
 			console.log(`error in chartsSubmitHandler: ${error}`);
@@ -152,8 +194,8 @@ const ChartWrapper = () => {
 
 	return (
 		<React.Fragment>
-			<ToggleSwitch setName={setCurrentQueryName} current={query.current} />
-			<Enchilada>
+			<Burrito>
+				<ToggleSwitch setName={setCurrentQueryName} current={getCurrentQuery()} />
 				<LineChart
 					isLoading={isLoading}
 					id={currentTemplate.id}
@@ -161,10 +203,8 @@ const ChartWrapper = () => {
 					data={data}
 					data1Label={currentTemplate.sentimentsLabel}
 					data2Label={currentTemplate.tweetsLabel}
-					xAxisTitle={`From ${format(new Date(queryFromDate), 'MM-yyyy')} to ${format(
-						new Date(queryToDate),
-						'MM-yyyy'
-					)}`}
+					xAxisTitle={`From ${queryFromDate} to ${queryToDate}`}
+					clickHandler={chartClickHandler}
 				/>
 				<ErrorModal error={error} onClear={clearError} />
 				<form onSubmit={chartsSubmitHandler}>
@@ -213,23 +253,30 @@ const ChartWrapper = () => {
 					standard deviation: ${tweetcountStats._stdDevT.toFixed(2)}`}
 				</Queso>
 				<Queso>{`Number of records: ${sentimentStats._countS}`}</Queso>
-			</Enchilada>
+				<Guacamole>
+					{searchResults.length > 0 && <DisplayTweetResults list={searchResults} />}
+				</Guacamole>
+			</Burrito>
 		</React.Fragment>
 	);
 };
 
-export default ChartWrapper;
+export default ChartController;
 
-const Enchilada = styled.div`
+const Burrito = styled.section`
 	margin: 2rem;
 	form {
 		display: flex;
-		margin: 1.5rem;
+		margin: 2rem .5rem 1rem;
 	}
 `;
-const Queso = styled.p`
+const Queso = styled.h2`
 	color: ${props => (props.color === 'red' ? setColor.noticeMeRed : setColor.bkgndBlue)};
-	font-size: 2rem;
-	font-weight: bold;
 	margin: 0;
+`;
+
+const Guacamole = styled.section`
+	/* background-color: ${setColor.bkgndYellow}; */
+	margin: 1rem;
+	font-size: 2rem;
 `;

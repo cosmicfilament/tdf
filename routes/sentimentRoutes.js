@@ -24,10 +24,9 @@ router.get('/daily', (req, res) => router.getDailySentiments(req, res));
 
 router.getWeeklySentiments = async (req, res) => {
 	// set defaults so that can be called with no query params
-	let fromDate = req.query.fromDate || ONE_YEAR_AGO;
-	let toDate = req.query.toDate || TODAY;
-	fromDate += 'T00:00:00.000Z';
-	toDate += 'T23:59:59.999Z';
+	let fromDate = new Date(req.query.fromDate) || ONE_YEAR_AGO;
+	let toDate = new Date(req.query.toDate) || TODAY(false);
+
 	// fields to include in the query to database
 	const projection = helpers.validateString(req.query.fields)
 		? String(req.query.fields).replace(',', ' ')
@@ -50,7 +49,7 @@ router.getWeeklySentiments = async (req, res) => {
 			projection,
 			options
 		).catch(error => {
-			console.log(error);
+			logs.log(`error thrown in weekly sentiments get catch handler ${error}, 'b','red`);
 		});
 		logs.log(
 			`Weekly get returned: ${sentiments.length} records for query: ${fromDate}:${toDate}.`,
@@ -59,17 +58,16 @@ router.getWeeklySentiments = async (req, res) => {
 		);
 		res.send({ sentiments });
 	} catch (error) {
-		logs.log(`error thrown in weekly sentiments get: ${error}, 'b','red`);
+		logs.log(`error thrown in weekly sentiments get try/catch ${error}, 'b','red`);
 		res.send('Query failed.');
 	}
 };
 
 router.getDailySentiments = async (req, res) => {
 	// set defaults so that can be called with no query params
-	let fromDate = req.query.fromDate || ONE_YEAR_AGO;
-	let toDate = req.query.toDate || TODAY;
-	fromDate += 'T00:00:00.000Z';
-	toDate += 'T23:59:59.999Z';
+	let fromDate = new Date(req.query.fromDate) || ONE_YEAR_AGO;
+	let toDate = new Date(req.query.toDate) || TODAY(false);
+
 	// fields to include in the query to database
 	const projection = helpers.validateString(req.query.fields)
 		? String(req.query.fields).replace(',', ' ')
@@ -94,7 +92,7 @@ router.getDailySentiments = async (req, res) => {
 			console.log(error);
 		});
 		logs.log(
-			`Daily get returned: ${sentiments.length} records for query: ${fromDate}:${toDate}.`,
+			`Daily get returned: ${sentiments.length} records for query: ${fromDate.toISOString()}:${toDate.toISOString()}.`,
 			'b',
 			'green'
 		);

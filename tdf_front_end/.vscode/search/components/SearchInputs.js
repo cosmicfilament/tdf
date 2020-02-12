@@ -5,9 +5,9 @@ const SearchInput = props => {
 		<div>
 			<label htmlFor={props.id}>{props.label}</label>
 			<input
-				style={{ width: props.width, margin: '5px' }}
+				style={{ width: props.width, margin: '.5rem' }}
 				id={props.id}
-				type="search"
+				type='search'
 				placeholder={props.placeholder}
 				title={props.title}
 				value={props.value}
@@ -24,9 +24,9 @@ const DateInput = props => {
 		<div>
 			<label htmlFor={props.id}>{props.label}</label>
 			<input
-				style={{ width: props.width, margin: '5px' }}
+				style={{ width: props.width, margin: '.5rem' }}
 				id={props.id}
-				type="date"
+				type='date'
 				placeholder={props.placeholder}
 				title={props.title}
 				value={props.value}
@@ -45,9 +45,9 @@ const CheckBox = props => {
 		<div>
 			<label htmlFor={props.id}>{props.label}</label>
 			<input
-				style={{ width: props.width, margin: '5px' }}
+				style={{ width: props.width, margin: '.5rem' }}
 				id={props.id}
-				type="checkbox"
+				type='checkbox'
 				placeholder={props.placeholder}
 				title={props.title}
 				label={props.labelhandler}

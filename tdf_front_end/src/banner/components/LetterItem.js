@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { setFont, setColor } from '../styles';
+import { setFont, setColor } from '../../styles';
 
 const LetterItem = ({ letter, index, _screenWidth, screenWidth }) => {
 	// starts the animation at the mouth of the tweeter in chief. So uses Banner scalefunction
@@ -16,8 +16,8 @@ const LetterItem = ({ letter, index, _screenWidth, screenWidth }) => {
 			_sizes = {
 				fontScale: 6.0,
 				xScaleFactor: xScaleFactor,
-				xOffSet: -30,
-				end: 3.5
+				xOffSet: -35,
+				end: 4.0
 			};
 			break;
 		case _screenWidth > screenWidth.desktop && _screenWidth <= screenWidth.large: // 1024 to 1200
@@ -41,10 +41,11 @@ const LetterItem = ({ letter, index, _screenWidth, screenWidth }) => {
 				fontScale: 3.25,
 				xScaleFactor: xScaleFactor,
 				xOffSet: -18,
-				end: 4.2
+				end: 4.3
 			};
 			break;
-		case _screenWidth > screenWidth.phone && _screenWidth <= screenWidth.phablet: // 320 to 480
+		case _screenWidth > screenWidth.phone && _screenWidth <= screenWidth.phablet: // 0 to 480
+		default:
 			_sizes = {
 				fontScale: 2.25,
 				xScaleFactor: xScaleFactor,
@@ -52,14 +53,6 @@ const LetterItem = ({ letter, index, _screenWidth, screenWidth }) => {
 				end: 2.8
 			};
 			break;
-		default:
-			// 0 to 320
-			_sizes = {
-				fontScale: 1.25,
-				xScaleFactor: xScaleFactor,
-				xOffSet: -11,
-				end: 2.75
-			};
 	}
 
 	const variants = {
@@ -97,7 +90,7 @@ const LetterItem = ({ letter, index, _screenWidth, screenWidth }) => {
 
 	return (
 		<StyledLI
-			style={{ position: 'absolute', top: '2.5rem', left: `${xScaleFactor}px` }}
+			style={{ position: 'absolute', top: '2.5rem', left: `${xScaleFactor / 10}rem` }}
 			variants={variants}
 			transition={{ duration: 1.5, ease: 'easeInOut' }}
 		>

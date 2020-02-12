@@ -2,8 +2,8 @@ import { css } from 'styled-components';
 
 export const setColor = {
 	tweetBlue: '#2cb1ff',
-	hairYellow: '#fee71d',
 	bkgndBlue: '#2a39f6',
+	bkgndYellow: '#ffffe1',
 	noticeMeRed: '#ff0055',
 	hoverNoticeMeRed: '#ff4382',
 	toggleSelectedBlue: '#2a39f6',
@@ -11,20 +11,14 @@ export const setColor = {
 	toggleHover: '#c9cdd0',
 	inputBkgnd: '#f7f7f7',
 	inputBorder: '#ececea',
-	disabledBgnd: '#ccc',
-	disabledColor: '#979797',
-	chartYellow: '#ffffca',
-	primaryColor: '#af9a7d',
+	disabledBtnBkgnd: '#ccc',
+	disabledBtnFgnd: '#979797',
 	mainWhite: '#fff',
-	mainBlack: '#222',
-	greyText: '#898989',
-	highLightForgnd: '#d9f2fb',
-	highLightbgnd: '#007da6'
+	mainBlack: '#222'
 };
 
 export const setFont = {
 	main: "'Arvo', serif",
-	second: "'Lato', sans-serif",
 	controls: "'Archivo', sans-serif",
 	mono: "'Courier Prime', monospace"
 };

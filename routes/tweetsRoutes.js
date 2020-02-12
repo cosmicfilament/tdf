@@ -11,11 +11,49 @@ const router = express.Router();
 
 const logs = require('../util/logs');
 const TweetDB = require('../models/tweet');
-const {TODAY, ONE_YEAR_AGO} = require('../util/nodeConfig');
+const { TODAY, ONE_YEAR_AGO } = require('../util/nodeConfig');
 
-router.get('/', (req, res) => router.paginateTweets(req, res));
+router.get('/', (req, res) => router.getTweets(req, res));
 
-router.get('/:page', (req, res) => router.paginateTweets(req, res));
+router.getTweets = async (req, res) => {
+	let fromDate = new Date(req.query.fromDate);
+	let toDate = new Date(req.query.toDate);
+
+	const SearchParams = {
+		created_at: {
+			$gte: fromDate,
+			$lte: toDate
+		}
+	};
+	const projection = '';
+	const options = {
+		sort: { created_at: -1 },
+		lean: true
+	};
+
+	try {
+		const tweets = await TweetDB.find(SearchParams, projection, options).catch(error => {
+			logs.log(`error thrown in tweets get catch handler ${error}, 'b','red`);
+		});
+
+		logs.log(
+			`Tweets get returned: ${tweets.length} records for query: ${fromDate}:${toDate}.`,
+			'b',
+			'green'
+		);
+
+		res.send({
+			tweets
+		});
+	} catch (error) {
+		logs.log(`error thrown in tweets get try/catch ${error}, 'b','red`);
+		res.send('Query failed.');
+	}
+};
+
+// router.get('/', (req, res) => router.paginateTweets(req, res));
+
+// router.get('/:page', (req, res) => router.paginateTweets(req, res));
 
 // search: search string
 // caseSensitive: 1 - true or 0 false
@@ -52,7 +90,7 @@ router.paginateTweets = async (req, res) => {
 						$gte: fromDate,
 						$lte: toDate
 					},
-					is_retweet: {$eq: false}
+					is_retweet: { $eq: false }
 				};
 
 	const sort = parseInt(req.query.sort) || -1; //desc
@@ -61,16 +99,13 @@ router.paginateTweets = async (req, res) => {
 	const offset = page * limit; // offset from the first page
 
 	const options = {
-		sort: {created_at: sort},
+		sort: { created_at: sort },
 		limit,
 		offset
 	};
 
 	try {
-		const count = await TweetDB.find().countDocuments(
-			SearchParams,
-			options
-		);
+		const count = await TweetDB.find().countDocuments(SearchParams, options);
 		const tweets = await TweetDB.paginate(SearchParams, options);
 		tweets.page = page + 1; // 1's based pages on front end
 		tweets.pages = Math.ceil(count / limit);

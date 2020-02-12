@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import reactConfig from '../util/reactConfig';
+import { BASE_URL } from '../util/reactConfig';
 
 export const makeURL = (url, path, params) => {
 	let newURL = params ? `${url}${path}?` : `${url}${path}`;
@@ -27,7 +27,7 @@ export const useHttpClient = () => {
 			body = null,
 			headers = {},
 			mode = 'cors',
-			url = reactConfig.BASE_URL
+			url = BASE_URL()
 		) => {
 			setIsLoading(true);
 			const httpAbortCtrl = new AbortController();

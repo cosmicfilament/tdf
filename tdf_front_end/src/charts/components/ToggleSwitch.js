@@ -17,7 +17,11 @@ const ToggleSwitch = props => {
 				id='toggle'
 				labelPosition='right'
 				label={
-					props.current === 'daily' ? 'Switch to Weekly Sentiment' : 'Switch to Daily Sentiment'
+					props.current === 'daily' ? (
+						'Switch to Weekly Sentiment'
+					) : (
+						'Switch to Daily Sentiment'
+					)
 				}
 				onSwitch={switchHandler}
 			/>
@@ -27,4 +31,9 @@ const ToggleSwitch = props => {
 
 export default ToggleSwitch;
 
-const ToggleWrapper = styled.div`margin: 5px 0 5px;`;
+const ToggleWrapper = styled.div`
+	margin: .5rem 0 1.5rem;
+	label {
+		margin-bottom: -.5rem;
+	}
+`;

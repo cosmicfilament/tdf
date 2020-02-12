@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import uuid from 'react-uuid';
 
-import { screenWidth } from '../styles';
+import { screenWidth } from '../../styles';
 import LetterItem from './LetterItem';
 
 class ReverseSplitterRegExpinator extends RegExp {

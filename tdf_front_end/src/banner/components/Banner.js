@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 import Logo from './Logo';
 import styled from 'styled-components/macro';
-import { screenWidth } from '../styles';
+import { screenWidth } from '../../styles';
 
 const Banner = ({ controls, _screenWidth }) => {
 	// scales the horizontal movement of the tweeter in chief if screen is larger than tablet
@@ -43,7 +43,7 @@ export default Banner;
 // constrain the width to a bit larger than the transition
 // distance or else it can cause scrollbars to appear.
 const StyledMotion = styled(motion.div)`
-	max-width: 200px;
+	max-width: 20rem;
 
 	> img {
 			margin-top: .8rem;

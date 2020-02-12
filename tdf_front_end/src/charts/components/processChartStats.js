@@ -19,7 +19,7 @@ const Stats = () => {
 		_stdDevT: 0
 	});
 
-	const processStats = useCallback(
+	const ProcessChartStats = useCallback(
 		data => {
 			const _countS = data.length;
 			const _minS = min(data.map(item => item.score));
@@ -54,7 +54,7 @@ const Stats = () => {
 		[ setSentimentStats, setTweetCountStats ]
 	);
 
-	return { processStats, sentimentStats, tweetcountStats };
+	return { ProcessChartStats, sentimentStats, tweetcountStats };
 };
 
 export default Stats;

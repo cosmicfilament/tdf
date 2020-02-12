@@ -69,15 +69,14 @@ const ToggleSwitch = styled.label`
 	
 	> input:hover + span {
 			/* background-color: ${setColor.toggleHover}; */
-			transform: translateX(-2px);
-			/* 	0 X direction, 10px Y direction 20px blur and color black at .2 opacity */
-			box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+			transform: translateX(-.2rem);
+			box-shadow: 0 .2rem .4rem rgba(0, 0, 0, .2);
 	}
 	> input:checked + span {
 			background-color: ${setColor.toggleSelectedBlue};
 	}
 	> input:focus + span {
-		box-shadow: 0 0 1px ${setColor.toggleSelectedBlue};
+		box-shadow: 0 0 .1rem ${setColor.toggleSelectedBlue};
 	}
 	> input:checked + span:before {
   	transform: translateX(${BaseHeight * ToggleMultiplier}rem);
@@ -107,7 +106,7 @@ const ToggleSlider = styled.span`
 		content: "";
 		height: ${BaseHeight * 0.8125}rem; // can't figure out how
 		width: ${BaseHeight * 0.8125}rem; // to scale this number
-		left: 2px; // very well. also need to mess with left
+		left: .2rem; // very well. also need to mess with left
 		bottom: 0;
 		background-color: white;
 		transition: .2s steps(1, jump-end);

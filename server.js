@@ -8,9 +8,9 @@
 
 const express = require('express');
 const path = require('path');
+const { performance } = require('perf_hooks');
 const tweetsRoutes = require('./routes/tweetsRoutes');
 const sentimentRoutes = require('./routes/sentimentRoutes');
-const userRoutes = require('./routes/userRoutes');
 
 const HttpError = require('./util/http-error');
 const { NODE_PORT, DB_RELOAD_ON_STARTUP, BASE_DIR } = {
@@ -46,8 +46,6 @@ app.use((req, res, next) => {
 // routes
 app.use('/dumpster/tweets', tweetsRoutes);
 app.use('/dumpster/sentiment', sentimentRoutes);
-app.use('/dumpster/user', userRoutes);
-
 // static route
 app.use(express.static(path.join(BASE_DIR, 'build')));
 app.use(express.static(path.join(BASE_DIR, 'build', 'js')));
@@ -87,17 +85,40 @@ app.shutdown = () => {
 // startup
 app.Run = async () => {
 	try {
+		const t0 = performance.now();
+
 		app.continueStartup && (await databaseConnect());
-		app.continueStartup && logWorker.init();
-		app.continueStartup && (await loadHistoricTweets(DB_RELOAD_ON_STARTUP));
-		app.continueStartup && (await loadWeeklySentiment(DB_RELOAD_ON_STARTUP));
-		app.continueStartup && (await loadDailySentiment(DB_RELOAD_ON_STARTUP));
-		app.continueStartup && dailyDBReloader.init();
-		app.continueStartup &&
-			(await app.listen(NODE_PORT, () =>
+
+		let loadArray = [
+			logWorker.init(),
+			loadHistoricTweets(DB_RELOAD_ON_STARTUP),
+			loadWeeklySentiment(DB_RELOAD_ON_STARTUP),
+			loadDailySentiment(DB_RELOAD_ON_STARTUP),
+			dailyDBReloader.init(),
+			app.listen(NODE_PORT, () =>
 				logs.log(`Server started on port ${NODE_PORT}.`, 'b', 'blue')
-			));
+			)
+		];
+		const loadSentiments = Promise.all(loadArray);
+		loadSentiments.then(() => {
+			logs.log(
+				`Loading database took ${((performance.now() - t0) / 60000).toFixed(
+					4
+				)} minutes to perform.`,
+				'b',
+				'white'
+			);
+		});
+		loadSentiments.then(() => {
+			logs.log('All startup processes are loaded and running.', 'b', 'green');
+		});
+
+		loadSentiments.catch(error => {
+			app.continueStartup = false;
+			logs.log(`Aborting... ${error}`, 'b', 'red');
+		});
 	} catch (error) {
+		app.continueStartup = false;
 		logs.log(`aborting... ${error}`, 'b', 'red');
 		app.shutdown();
 	}

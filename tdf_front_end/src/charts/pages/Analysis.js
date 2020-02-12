@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import ChartWrapper from '../components/ChartWrapper';
+
+import { setColor } from '../../styles';
+import ChartController from '../components/ChartController';
 
 const Analysis = () => {
 	return (
 		<React.Fragment>
-			<EsplainItToMe>
+			<StyledIntro>
 				<h1>
-					This site is an attempt to ascertain Donald Trump's state of mind by measuring the{' '}
+					This site analyzes the{' '}
 					<a
 						href='https://en.wikipedia.org/wiki/Sentiment_analysis'
 						rel='noopener noreferrer'
@@ -15,23 +17,49 @@ const Analysis = () => {
 					>
 						sentiment
 					</a>{' '}
-					of his tweets and comparing that to the level of tweets generated.
+					of @realDonaldTrump's tweets and compares that to the number of tweets generated
+					in an attempt to measure the current state of his<StyledNormal> mind.</StyledNormal>
 				</h1>
-			</EsplainItToMe>
-
-			<DivWrapper>
-				<ChartWrapper />
-			</DivWrapper>
+				<h2>
+					Hint: Click on any point on the graph to retrieve a list of the tweets data
+					underlying that point.
+				</h2>
+			</StyledIntro>
+			<StyledContent>
+				<ChartController />
+			</StyledContent>
 		</React.Fragment>
 	);
 };
 
 export default Analysis;
 
-const DivWrapper = styled.div`
+const StyledContent = styled.div`
 	position: relative;
 	width: 100%;
 	height: auto;
 `;
 
-const EsplainItToMe = styled.div`margin: 2rem;`;
+const StyledIntro = styled.section`
+	margin: 2rem;
+	a {
+		font-weight: lighter;
+		color: ${setColor.mainBlack};
+	}
+	a:link,
+	a:visited {
+		text-decoration: underline;
+	}
+	a:hover {
+		font-weight: bold;
+	}
+`;
+
+const StyledNormal = styled.span`
+	display: inline;
+	:hover {
+		::before {
+			content: ' crazy';
+		}
+	}
+`;

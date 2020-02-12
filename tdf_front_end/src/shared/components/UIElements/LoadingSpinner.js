@@ -26,17 +26,17 @@ const SpinnerWrapper = styled.div`
 
 const Spinner = styled.div`
 	display: inline-block;
-	width: 96px;
-	height: 96px;
+	width: 9.6rem;
+	height: 9.6rem;
 
 	:after {
 		content: ' ';
 		display: block;
-		width: 76px;
-		height: 76px;
-		margin: 1px;
+		width: 7.6rem;
+		height: 7.6rem;
+		margin: .1rem;
 		border-radius: 50%;
-		border: 5px solid #510077;
+		border: .5rem solid #510077;
 		border-color: #510077 transparent #510077 transparent;
 		animation: lds-dual-ring 1.2s linear infinite;
 	}

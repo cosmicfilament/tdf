@@ -32,8 +32,7 @@ nodeConfig.DBASE = process.env.DBASE;
 nodeConfig.DB_USER = process.env.DB_USER;
 nodeConfig.DB_PWD = process.env.DB_PWD;
 // loading data
-nodeConfig.DB_RELOAD_ON_STARTUP =
-	process.env.DB_RELOAD_ON_STARTUP === 'true' ? true : false;
+nodeConfig.DB_RELOAD_ON_STARTUP = process.env.DB_RELOAD_ON_STARTUP === 'true' ? true : false;
 // test at 1 minute interval for now
 nodeConfig.DB_DAILY_RELOAD_TIME =
 	process.env.DB_DAILY_RELOAD_TIME === 'false'
@@ -59,15 +58,23 @@ nodeConfig.DB_CURRENT_LOAD_FILE_ARRAY = [
 
 nodeConfig.TWEET_START_DATE = String(process.env.TWEET_START_DATE);
 
-nodeConfig.TODAY = (function () {
-	let _today = new Date(Date.now()).toISOString();
-	return _today.substr(0, _today.indexOf('T'));
+nodeConfig.TODAY = (function (startOfDay = true) {
+	let _today = new Date(Date.now());
+	_today.setUTCHours(startOfDay ? 0 : 23);
+	_today.setUTCMinutes(startOfDay ? 0 : 59);
+	_today.setUTCSeconds(startOfDay ? 0 : 59);
+	_today.setUTCMilliseconds(startOfDay ? 0 : 999);
+	return _today;
 })();
 
 nodeConfig.ONE_YEAR_AGO = (function () {
 	let aYearAgo = new Date(Date.now());
 	aYearAgo.setMonth(aYearAgo.getMonth() - 12);
-	aYearAgo = aYearAgo.toISOString();
-	return aYearAgo.substr(0, aYearAgo.indexOf('T'));
+	aYearAgo.setUTCHours(0);
+	aYearAgo.setUTCMinutes(0);
+	aYearAgo.setUTCSeconds(0);
+	aYearAgo.setUTCMilliseconds(0);
+	return aYearAgo;
 })();
+
 module.exports = nodeConfig;

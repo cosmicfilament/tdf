@@ -14,6 +14,7 @@ const GlobalStyles = createGlobalStyle`
 }
 html {
   font-size: 62.5%;
+  
 }
 
 body{
@@ -22,6 +23,25 @@ body{
   font-family: ${setFont.main};
   min-width: ${minScreenWidth}px;
   max-width: ${maxScreenWidth}px;
+}
+
+section, article, aside {
+  font-size: 1rem;
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 0.67rem 0;
+}
+
+h2 {
+  font-size: 2rem;
+  margin: 0.67rem 0;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin: 0.67rem 0;
 }
 
 `;
