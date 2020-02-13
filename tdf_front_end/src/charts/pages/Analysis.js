@@ -18,7 +18,7 @@ const Analysis = () => {
 						sentiment
 					</a>{' '}
 					of @realDonaldTrump's tweets and compares that to the number of tweets generated
-					in an attempt to measure the current state of his<StyledNormal> mind.</StyledNormal>
+					in an attempt to measure the current state of his<StyledSpan> mind.</StyledSpan>
 				</h1>
 				<h2>
 					Hint: Click on any point on the graph to retrieve a list of the tweets data
@@ -55,7 +55,7 @@ const StyledIntro = styled.section`
 	}
 `;
 
-const StyledNormal = styled.span`
+const StyledSpan = styled.span`
 	display: inline;
 	:hover {
 		::before {
