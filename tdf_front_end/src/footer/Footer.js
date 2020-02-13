@@ -1,16 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { setColor } from '../styles';
-
 const Footer = () => {
-	return <StyledFooter>footer goes here</StyledFooter>;
+	return <StyledFooter>Copyright 2020 The Cosmic Filament </StyledFooter>;
 };
 
 export default Footer;
 
 const StyledFooter = styled.footer`
-	height: 5rem;
-	background: ${setColor.tweetBlue};
-	border: .1rem solid ${setColor.bkgndBlue};
+	height: 3rem;
+	text-align: center;
+	font-size: 1rem;
 `;

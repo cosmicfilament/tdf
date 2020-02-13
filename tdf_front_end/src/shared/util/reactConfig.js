@@ -1,6 +1,6 @@
 import { zonedTimeToUtc, utcToZonedTime, format } from 'date-fns-tz';
 
-export const LOG_IT = true;
+export const LOG_IT = false;
 
 const BASE_URL_DEVELOPMENT = 'http://localhost:5000';
 const BASE_URL_PRODUCTION = 'http://twitterdumpsterfire.com:80';
@@ -8,9 +8,7 @@ const BASE_URL_PRODUCTION = 'http://twitterdumpsterfire.com:80';
 const nyTZ = 'America/New_York';
 
 export const BASE_URL = function () {
-	return process.env.NODE_ENV === 'development'
-		? BASE_URL_DEVELOPMENT
-		: BASE_URL_PRODUCTION;
+	return process.env.NODE_ENV === 'development' ? BASE_URL_DEVELOPMENT : BASE_URL_PRODUCTION;
 };
 
 export const WEEKLY_SENTIMENT_PATH = function () {

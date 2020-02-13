@@ -17,11 +17,7 @@ const ToggleSwitch = props => {
 				id='toggle'
 				labelPosition='right'
 				label={
-					props.current === 'daily' ? (
-						'Switch to Weekly Sentiment'
-					) : (
-						'Switch to Daily Sentiment'
-					)
+					props.current === 'daily' ? 'Switch to Weekly Sentiment' : 'Switch to Daily Sentiment'
 				}
 				onSwitch={switchHandler}
 			/>

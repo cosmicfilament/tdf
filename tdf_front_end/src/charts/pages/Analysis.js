@@ -9,7 +9,7 @@ const Analysis = () => {
 		<React.Fragment>
 			<StyledIntro>
 				<h1>
-					This site analyzes the{' '}
+					This site charts the{' '}
 					<a
 						href='https://en.wikipedia.org/wiki/Sentiment_analysis'
 						rel='noopener noreferrer'
@@ -17,12 +17,12 @@ const Analysis = () => {
 					>
 						sentiment
 					</a>{' '}
-					of @realDonaldTrump's tweets and compares that to the number of tweets generated
-					in an attempt to measure the current state of his<StyledSpan> mind.</StyledSpan>
+					level of @realDonaldTrump's tweets for a given length of time along with the corresponding
+					amount of tweets over that interval.
 				</h1>
 				<h2>
-					Hint: Click on any point on the graph to retrieve a list of the tweets data
-					underlying that point.
+					Hint: Click on any point on the graph to retrieve a list of the tweets data underlying
+					that point.
 				</h2>
 			</StyledIntro>
 			<StyledContent>
@@ -52,14 +52,5 @@ const StyledIntro = styled.section`
 	}
 	a:hover {
 		font-weight: bold;
-	}
-`;
-
-const StyledSpan = styled.span`
-	display: inline;
-	:hover {
-		::before {
-			content: ' crazy';
-		}
 	}
 `;

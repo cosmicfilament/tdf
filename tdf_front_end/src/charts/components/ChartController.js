@@ -195,7 +195,7 @@ const ChartController = () => {
 	return (
 		<React.Fragment>
 			<Burrito>
-				<ToggleSwitch setName={setCurrentQueryName} current={getCurrentQuery()} />
+				<ToggleSwitch setName={setCurrentQueryName} current={query.current} />
 				<LineChart
 					isLoading={isLoading}
 					id={currentTemplate.id}
