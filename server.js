@@ -82,6 +82,12 @@ app.shutdown = () => {
 	}, 1000 * 2);
 };
 
+process.on('SIGINT', function() {
+	db.stop(function(err) {
+		process.exit(err ? 1 : 0);
+	});
+});
+
 // startup
 app.Run = async () => {
 	try {
