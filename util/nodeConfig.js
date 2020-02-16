@@ -32,12 +32,10 @@ nodeConfig.DBASE = process.env.DBASE;
 nodeConfig.DB_USER = process.env.DB_USER;
 nodeConfig.DB_PWD = process.env.DB_PWD;
 // loading data
-nodeConfig.DB_RELOAD_ON_STARTUP = process.env.DB_RELOAD_ON_STARTUP === 'true' ? true : false;
+nodeConfig.DB_RELOAD_ON_STARTUP =
+	process.env.DB_RELOAD_ON_STARTUP === 'true' ? true : false;
 // test at 1 minute interval for now
-nodeConfig.DB_DAILY_RELOAD_TIME =
-	process.env.DB_DAILY_RELOAD_TIME === 'false'
-		? false
-		: String(process.env.DB_DAILY_RELOAD_TIME).split(':');
+nodeConfig.DB_DAILY_RELOAD_TIME_ARRAY = process.env.DB_DAILY_RELOAD_TIME.split(',');
 nodeConfig.DB_CURRENT_LOAD_FILE = '2020.json';
 nodeConfig.DB_CURRENT_LOAD_FILE_URL =
 	'http://www.trumptwitterarchive.com/data/realdonaldtrump/2020.json';
