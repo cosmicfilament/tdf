@@ -1,12 +1,10 @@
 {
 	"name": "twitterdumpsterfire",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "",
 	"main": "server.js",
 	"eslintConfig": {
-		"extends": [
-			"plugin:prettier/recommended"
-		]
+		"extends": [ "plugin:prettier/recommended" ]
 	},
 	"scripts": {
 		"start": "npm run nodejs",
